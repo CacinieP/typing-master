@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Typing Master - 多语言打字练习</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <nav id="topbar">
+    <div class="logo">Typing Master</div>
+    <div class="lang-selector">
+      <button class="lang-btn" data-lang="fr">Français 法语</button>
+      <button class="lang-btn" data-lang="es">Español 西班牙语</button>
+      <button class="lang-btn" data-lang="it">Italiano 意大利语</button>
+      <button class="lang-btn" data-lang="pt">Português 葡萄牙语</button>
+      <button class="lang-btn" data-lang="ru">Русский 俄语</button>
+      <button class="lang-btn" data-lang="ja">日本語 日语</button>
+    </div>
+    <div class="nav-right">
+      <button id="btn-manual" title="手册">?</button>
+      <button id="btn-stats" title="统计">📊</button>
+      <button id="btn-reset" title="重置进度">↺</button>
+    </div>
+  </nav>
+
+  <!-- 控制栏 -->
+  <div id="controls">
+    <div class="control-group">
+      <label>模式 Mode</label>
+      <select id="mode-select">
+        <option value="practice">自由练习</option>
+        <option value="timed">限时挑战</option>
+        <option value="precision">精确模式</option>
+      </select>
+      <select id="time-select" class="hidden">
+        <option value="60">60s</option>
+        <option value="120">120s</option>
+        <option value="300">300s</option>
+      </select>
+    </div>
+    <div class="control-group" id="input-mode-group">
+      <label id="input-mode-label">输入法 Input</label>
+      <select id="input-mode-select">
+        <option value="romaji">罗马字 Romaji</option>
+        <option value="kana">假名 かな</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>分类 Catégorie</label>
+      <select id="category-select">
+        <option value="all">全部 Toutes</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>难度 Difficulté</label>
+      <select id="difficulty-select">
+        <option value="all">全部 Toutes</option>
+        <option value="1">A1 初级</option>
+        <option value="2">A2 基础</option>
+        <option value="3">B1 中级</option>
+        <option value="4">B2 中高级</option>
+        <option value="5">C1 高级</option>
+      </select>
+    </div>
+    <button id="btn-start">开始 Commencer</button>
+  </div>
+
+  <!-- 主游戏区 -->
+  <div id="game-area" class="hidden">
+    <!-- 待打文本 -->
+    <div id="text-panel">
+      <div id="word-display">
+        <div id="kanji-display"></div>
+        <div id="furigana-display"></div>
+        <span id="target-word"></span>
+      </div>
+      <div id="word-info">
+        <span id="word-meaning"></span>
+        <span id="word-phonetic"></span>
+      </div>
+      <input type="text" id="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="在此输入...">
+      <div id="char-feedback"></div>
+    </div>
+
+    <!-- 虚拟键盘 -->
+    <div id="keyboard-panel">
+      <div id="keyboard-hint"></div>
+      <div id="keyboard"></div>
+    </div>
+  </div>
+
+  <!-- 实时统计 -->
+  <div id="live-stats" class="hidden">
+    <div class="stat">
+      <span class="stat-label">速度 Vitesse</span>
+      <span class="stat-value" id="stat-wpm">0 WPM</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">准确率 Précision</span>
+      <span class="stat-value" id="stat-accuracy">100%</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">进度 Progrès</span>
+      <span class="stat-value" id="stat-progress">0/0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">计时 Temps</span>
+      <span class="stat-value" id="stat-timer">--</span>
+    </div>
+  </div>
+
+  <!-- 欢迎页 -->
+  <div id="welcome">
+    <h1>Typing Master</h1>
+    <h2>多语言打字练习</h2>
+    <p>选择一种语言，开始练习打字</p>
+    <div id="welcome-langs">
+      <div class="welcome-lang-card" data-lang="fr">
+        <div class="flag">🇫🇷</div>
+        <div class="lang-name">Français<br><small>法语</small></div>
+      </div>
+      <div class="welcome-lang-card" data-lang="es">
+        <div class="flag">🇪🇸</div>
+        <div class="lang-name">Español<br><small>西班牙语</small></div>
+      </div>
+      <div class="welcome-lang-card" data-lang="it">
+        <div class="flag">🇮🇹</div>
+        <div class="lang-name">Italiano<br><small>意大利语</small></div>
+      </div>
+      <div class="welcome-lang-card" data-lang="pt">
+        <div class="flag">🇵🇹</div>
+        <div class="lang-name">Português<br><small>葡萄牙语</small></div>
+      </div>
+      <div class="welcome-lang-card" data-lang="ru">
+        <div class="flag">🇷🇺</div>
+        <div class="lang-name">Русский<br><small>俄语</small></div>
+      </div>
+      <div class="welcome-lang-card" data-lang="ja">
+        <div class="flag">🇯🇵</div>
+        <div class="lang-name">日本語<br><small>日语</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结果面板 -->
+  <div id="result-panel" class="hidden">
+    <h2>练习完成！</h2>
+    <div id="result-stats"></div>
+    <button id="btn-retry">重新练习</button>
+    <button id="btn-home">返回首页</button>
+  </div>
+
+  <!-- 统计面板 -->
+  <div id="stats-panel" class="hidden">
+    <h2>统计</h2>
+    <div id="stats-content"></div>
+    <button id="btn-close-stats">关闭</button>
+  </div>
+
+  <!-- 手册面板 -->
+  <div id="manual-panel" class="hidden">
+    <h2 id="manual-title">打字手册</h2>
+    <div id="manual-content"></div>
+    <button id="btn-close-manual">关闭</button>
+  </div>
+
+  <script src="js/keyboard.js"></script>
+  <script src="js/stats.js"></script>
+  <script>var WORD_DATA = WORD_DATA || {};</script>
+  <script src="words/fr.js"></script>
+  <script src="words/es.js"></script>
+  <script src="words/it.js"></script>
+  <script src="words/pt.js"></script>
+  <script src="words/ru.js"></script>
+  <script src="words/ja.js"></script>
+  <script src="js/renderer.js"></script>
+</body>
+</html>
