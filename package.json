@@ -34,8 +34,7 @@
             "x64"
           ]
         }
-      ],
-      "icon": "assets/icon.ico"
+      ]
     },
     "mac": {
       "target": [
@@ -46,15 +45,11 @@
             "arm64"
           ]
         }
-      ],
-      "icon": "assets/icon.icns"
+      ]
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico"
+      "allowToChangeInstallationDirectory": true
     }
   },
   "devDependencies": {
