@@ -87,6 +87,8 @@
     $('btn-close-stats').addEventListener('click', () => statsPanel.classList.add('hidden'));
     $('btn-manual').addEventListener('click', showManual);
     $('btn-close-manual').addEventListener('click', () => manualPanel.classList.add('hidden'));
+    $('btn-vocab').addEventListener('click', showVocabPanel);
+    $('btn-close-vocab').addEventListener('click', () => $('vocab-panel').classList.add('hidden'));
     $('btn-reset').addEventListener('click', () => {
       if (confirm('确定重置所有进度？')) {
         stats.reset(currentLang);
@@ -678,6 +680,300 @@
     return html;
   }
 
+  // --- Vocabulary management ---
+
+  const CSV_HEADERS = {
+    european: 'word,meaning,phonetic,category,difficulty',
+    japanese: 'word,reading,romaji,meaning,level,category,difficulty'
+  };
+
+  const LANG_TYPE = { fr: 'european', es: 'european', it: 'european', pt: 'european', ru: 'european', ja: 'japanese' };
+
+  function escapeCSV(val) {
+    const s = String(val == null ? '' : val);
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  function downloadFile(filename, content) {
+    const BOM = '﻿';
+    const blob = new Blob([BOM + content], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function generateTemplate(lang) {
+    const type = LANG_TYPE[lang];
+    const templates = {
+      fr: 'bonjour,你好,/bɔ̃ʒuʁ/,salutations,1\n' +
+          'merci,谢谢,/mɛʁsi/,salutations,1\n' +
+          'croissant,羊角面包,/kʁwasɑ̃/,nourriture,1\n' +
+          'bibliothèque,图书馆,/biblijɔtɛk/,quotidien,2\n' +
+          'développement,发展,/devlɔpmɑ̃/,emotions,3\n',
+      es: 'hola,你好,/ola/,saludos,1\n' +
+          'gracias,谢谢,/ɡɾaθjas/,saludos,1\n' +
+          'tapas,小吃,/tapas/,nourriture,1\n' +
+          'biblioteca,图书馆,/iblioteka/,quotidien,2\n' +
+          'desarrollo,发展,/desaroʎo/,emotions,3\n',
+      it: 'ciao,你好,/tʃao/,saluti,1\n' +
+          'grazie,谢谢,/ˈɡrattsje/,saluti,1\n' +
+          'pizza,披萨,/ˈpittsa/,nourriture,1\n' +
+          'biblioteca,图书馆,/biblioˈteka/,quotidien,2\n' +
+          'sviluppo,发展,/zviˈluppo/,emotions,3\n',
+      pt: 'olá,你好,/ɔˈla/,saudacoes,1\n' +
+          'obrigado,谢谢,/obɾiˈɡadu/,saudacoes,1\n' +
+          'feijoada,黑豆炖肉,/fejˈʒwada/,nourriture,2\n' +
+          'biblioteca,图书馆,/biliuˈtɛka/,quotidien,2\n' +
+          'desenvolvimento,发展,/dezevolveˈmẽtu/,emotions,4\n',
+      ru: 'привет,你好,/prʲɪˈvʲet/,salutations,1\n' +
+          'спасибо,谢谢,/spɐˈsʲibə/,salutations,1\n' +
+          'водка,伏特加,/ˈvotkə/,nourriture,1\n' +
+          'библиотека,图书馆,/bʲɪblʲɪɐˈtʲekə/,quotidien,2\n' +
+          'развитие,发展,/rɐzˈvʲitʲɪje/,emotions,3\n'
+    };
+
+    if (type === 'japanese') {
+      return CSV_HEADERS.japanese + '\n' +
+        '私,わたし,watashi,我,N5,noun_basic,1\n' +
+        '食べる,たべる,taberu,吃,N5,verb_2,1\n' +
+        '飲む,のむ,nomu,喝,N5,verb_1,1\n' +
+        '美しい,うつくしい,utsukushii,美丽的,N3,adjective_i,3\n' +
+        '図書館,としょかん,toshokan,图书馆,N3,noun_nature,3\n';
+    }
+
+    return CSV_HEADERS.european + '\n' + (templates[lang] || templates.fr);
+  }
+
+  function exportVocab(lang) {
+    const data = WORD_DATA[lang];
+    if (!data) return;
+    const type = LANG_TYPE[lang];
+    let csv = type === 'japanese' ? CSV_HEADERS.japanese : CSV_HEADERS.european;
+    csv += '\n';
+    data.words.forEach(w => {
+      if (type === 'japanese') {
+        csv += [escapeCSV(w.word), escapeCSV(w.reading), escapeCSV(w.romaji), escapeCSV(w.meaning), escapeCSV(w.level), escapeCSV(w.category), w.difficulty].join(',') + '\n';
+      } else {
+        csv += [escapeCSV(w.word), escapeCSV(w.meaning), escapeCSV(w.phonetic), escapeCSV(w.category), w.difficulty].join(',') + '\n';
+      }
+    });
+    const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', ja: 'japanese' };
+    downloadFile((names[lang] || lang) + '_vocabulary.csv', csv);
+  }
+
+  function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return { error: '文件为空或格式不正确（至少需要标题行+数据行）' };
+
+    // Skip BOM
+    if (lines[0].charCodeAt(0) === 0xFEFF) lines[0] = lines[0].substring(1);
+
+    const header = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+    const required = {
+      european: ['word', 'meaning', 'category', 'difficulty'],
+      japanese: ['word', 'reading', 'romaji', 'meaning', 'category', 'difficulty']
+    };
+
+    const isJapanese = header.includes('reading') && header.includes('romaji');
+    const type = isJapanese ? 'japanese' : 'european';
+    const missing = required[type].filter(f => !header.includes(f));
+    if (missing.length > 0) {
+      return { error: '缺少必要列: ' + missing.join(', ') + '。需要的列: ' + CSV_HEADERS[type] };
+    }
+
+    const words = [];
+    const categories = {};
+    const errors = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const fields = parseCSVLine(line);
+      const row = {};
+      header.forEach((h, idx) => { row[h] = (fields[idx] || '').trim(); });
+
+      if (!row.word) { errors.push('第' + (i + 1) + '行: word 为空，已跳过'); continue; }
+      if (!row.meaning) { errors.push('第' + (i + 1) + '行: meaning 为空，已跳过'); continue; }
+
+      const diff = parseInt(row.difficulty);
+      if (isNaN(diff) || diff < 1 || diff > 5) { errors.push('第' + (i + 1) + '行: difficulty 应为1-5，已设为1'); }
+
+      if (type === 'japanese') {
+        const w = {
+          word: row.word,
+          reading: row.reading || '',
+          romaji: row.romaji || '',
+          meaning: row.meaning,
+          level: row.level || 'N5',
+          category: row.category || 'custom',
+          difficulty: isNaN(diff) ? 1 : Math.max(1, Math.min(5, diff))
+        };
+        words.push(w);
+        categories[w.category] = w.category;
+      } else {
+        const w = {
+          word: row.word,
+          meaning: row.meaning,
+          phonetic: row.phonetic || '',
+          category: row.category || 'custom',
+          difficulty: isNaN(diff) ? 1 : Math.max(1, Math.min(5, diff))
+        };
+        words.push(w);
+        categories[w.category] = w.category;
+      }
+    }
+
+    if (words.length === 0) {
+      return { error: '没有解析到有效词汇' };
+    }
+
+    return { words, categories, errors, type };
+  }
+
+  function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < line.length && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          current += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          result.push(current);
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+    }
+    result.push(current);
+    return result;
+  }
+
+  function showVocabPanel() {
+    const panel = $('vocab-panel');
+    panel.classList.remove('hidden');
+    $('vocab-import-status').textContent = '';
+    $('vocab-import-status').className = '';
+    $('vocab-file-label').textContent = '选择文件...';
+    $('vocab-file-input').value = '';
+  }
+
+  function initVocabHandlers() {
+    // Download template buttons
+    document.querySelectorAll('.vocab-download-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', ja: 'japanese' };
+        downloadFile((names[lang] || lang) + '_template.csv', generateTemplate(lang));
+      });
+    });
+
+    // File input
+    $('vocab-file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        $('vocab-file-label').textContent = file.name;
+      }
+    });
+
+    // Import button
+    $('btn-vocab-import').addEventListener('click', () => {
+      const fileInput = $('vocab-file-input');
+      const statusEl = $('vocab-import-status');
+      if (!fileInput.files || !fileInput.files[0]) {
+        statusEl.textContent = '请先选择一个 CSV 文件';
+        statusEl.className = 'error';
+        return;
+      }
+
+      const lang = $('vocab-import-lang').value;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = parseCSV(e.target.result);
+        if (result.error) {
+          statusEl.textContent = result.error;
+          statusEl.className = 'error';
+          return;
+        }
+
+        // Merge with existing categories
+        const data = WORD_DATA[lang];
+        if (data) {
+          const mergedCats = Object.assign({}, data.categories, result.categories);
+          WORD_DATA[lang] = { categories: mergedCats, words: result.words };
+        } else {
+          WORD_DATA[lang] = { categories: result.categories, words: result.words };
+        }
+
+        // Save to localStorage for persistence
+        try {
+          localStorage.setItem('typingmaster_custom_' + lang, JSON.stringify(WORD_DATA[lang]));
+        } catch (err) { /* ignore */ }
+
+        let msg = '导入成功！共 ' + result.words.length + ' 个词汇';
+        if (result.errors.length > 0) {
+          msg += '（' + result.errors.length + ' 条警告）';
+        }
+        statusEl.textContent = msg;
+        statusEl.className = 'success';
+
+        // Refresh category selector if current lang matches
+        if (currentLang === lang) {
+          const data2 = WORD_DATA[lang];
+          categorySelect.innerHTML = '<option value="all">全部</option>';
+          for (const [key, label] of Object.entries(data2.categories)) {
+            categorySelect.innerHTML += '<option value="' + key + '">' + label + '</option>';
+          }
+        }
+      };
+      reader.readAsText(fileInput.files[0], 'UTF-8');
+    });
+
+    // Export button
+    $('btn-vocab-export').addEventListener('click', () => {
+      exportVocab($('vocab-export-lang').value);
+    });
+  }
+
+  function loadCustomVocab() {
+    for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'ja']) {
+      try {
+        const saved = localStorage.getItem('typingmaster_custom_' + lang);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.words && parsed.words.length > 0) {
+            WORD_DATA[lang] = parsed;
+          }
+        }
+      } catch (e) { /* ignore */ }
+    }
+  }
+
   // Start
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCustomVocab();
+    init();
+    initVocabHandlers();
+  });
 })();

@@ -2941,15 +2941,6 @@ WORD_DATA["ja"] = {
       "difficulty": 2
     },
     {
-      "word": "拾う",
-      "reading": "ひろう",
-      "romaji": "hirou",
-      "meaning": "拾起",
-      "level": "N4",
-      "category": "verb_1",
-      "difficulty": 2
-    },
-    {
       "word": "注ぐ",
       "reading": "そそぐ",
       "romaji": "sosogu",
@@ -3769,7 +3760,7 @@ WORD_DATA["ja"] = {
       "difficulty": 3
     },
     {
-      "word": "竞争",
+      "word": "競争",
       "reading": "きょうそう",
       "romaji": "kyousou",
       "meaning": "竞争",
@@ -4691,15 +4682,6 @@ WORD_DATA["ja"] = {
       "reading": "じゅうなんな",
       "romaji": "juunanna",
       "meaning": "灵活的",
-      "level": "N2",
-      "category": "adjective_na",
-      "difficulty": 4
-    },
-    {
-      "word": "緻密な",
-      "reading": "ちみつな",
-      "romaji": "chimitsuna",
-      "meaning": "细致的",
       "level": "N2",
       "category": "adjective_na",
       "difficulty": 4

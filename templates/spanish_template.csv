@@ -1,0 +1,27 @@
+word,meaning,phonetic,category,difficulty
+hola,你好,/ola/,saludos,1
+gracias,谢谢,/ɡɾaθjas/,saludos,1
+buenos días,早上好,/bwenos dias/,saludos,1
+tortilla,玉米饼,/toɾtiʎa/,nourriture,1
+paella,海鲜饭,/paeʎa/,nourriture,2
+jamón,火腿,/xamon/,nourriture,1
+viaje,旅行,/biaxe/,viaje,2
+avión,飞机,/abion/,viaje,2
+tren,火车,/tɾen/,viaje,1
+uno,一,/uno/,numeros,1
+dos,二,/dos/,numeros,1
+tres,三,/tɾes/,numeros,1
+madre,母亲,/madɾe/,familia,1
+padre,父亲,/padɾe/,familia,1
+rojo,红色,/roxo/,colores,1
+azul,蓝色,/aθul/,colores,1
+cabeza,头,/kaβeθa/,cuerpo,1
+mano,手,/mano/,cuerpo,1
+sol,太阳,/sol/,tiempo,1
+lluvia,雨,/ʎubia/,tiempo,1
+casa,家,/kasa/,diario,1
+trabajo,工作,/tɾabaxo/,diario,2
+feliz,幸福的,/feliθ/,emociones,2
+triste,悲伤的,/tɾiste/,emociones,2
+biblioteca,图书馆,/iblioteka/,diario,2
+desarrollo,发展,/desaroʎo/,emociones,3

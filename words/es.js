@@ -109,7 +109,6 @@ WORD_DATA['es'] = {
     {word:'mercado',meaning:'市场',phonetic:'/meɾ.ˈka.ðo/',category:'viaje',difficulty:2},
     {word:'museo',meaning:'博物馆',phonetic:'/mu.ˈse.o/',category:'viaje',difficulty:2},
     {word:'restaurante',meaning:'餐厅',phonetic:'/res.taw.ˈɾan.te/',category:'viaje',difficulty:3},
-    {word:'equipaje',meaning:'行李',phonetic:'/e.ki.ˈpa.xe/',category:'viaje',difficulty:2},
     {word:'itinerario',meaning:'行程表',phonetic:'/i.ti.ne.ˈɾa.rjo/',category:'viaje',difficulty:3},
 
     // ===== números (数字) =====
@@ -200,7 +199,7 @@ WORD_DATA['es'] = {
     {word:'colores',meaning:'颜色（复数）',phonetic:'/ko.ˈlo.ɾes/',category:'colores',difficulty:2},
     {word:'claro',meaning:'浅色的',phonetic:'/ˈkla.ɾo/',category:'colores',difficulty:1},
     {word:'transparente',meaning:'透明的',phonetic:'/tɾans.pa.ˈɾen.te/',category:'colores',difficulty:3},
-    {word:' beige',meaning:'米色',phonetic:'/ˈbej.xe/',category:'colores',difficulty:2},
+    {word:'beige',meaning:'米色',phonetic:'/ˈbej.xe/',category:'colores',difficulty:2},
     {word:'colorido',meaning:'色彩鲜艳的',phonetic:'/ko.lo.ˈɾi.ðo/',category:'colores',difficulty:3},
     {word:'pálido',meaning:'苍白的',phonetic:'/ˈpa.li.ðo/',category:'colores',difficulty:2},
     {word:'vivo',meaning:'鲜艳的',phonetic:'/ˈbi.βo/',category:'colores',difficulty:1},
@@ -256,7 +255,6 @@ WORD_DATA['es'] = {
     {word:'seco',meaning:'干燥的',phonetic:'/ˈse.ko/',category:'clima',difficulty:1},
     {word:'niebla',meaning:'雾',phonetic:'/ˈnje.βla/',category:'clima',difficulty:2},
     {word:'arcoíris',meaning:'彩虹',phonetic:'/ˈaɾ.ko.i.ɾis/',category:'clima',difficulty:3},
-    {word:'tormenta',meaning:'暴风雨',phonetic:'/toɾ.ˈmen.ta/',category:'clima',difficulty:2},
     {word:'huracán',meaning:'飓风',phonetic:'/u.ɾa.ˈkan/',category:'clima',difficulty:3},
     {word:'terremoto',meaning:'地震',phonetic:'/te.re.ˈmo.te/',category:'clima',difficulty:3},
     {word:'inundación',meaning:'洪水',phonetic:'/in.un.da.ˈθjon/',category:'clima',difficulty:3},
@@ -562,7 +560,7 @@ WORD_DATA['es'] = {
 
     // --- C1: 高级情感与心理 (advanced emotions & psychology) ---
     {word:'desdén',meaning:'蔑视',phonetic:'/dez.ˈðen/',category:'emociones',difficulty:5},
-    {word:'anguish',meaning:'极度痛苦',phonetic:'/aŋ.ˈɡwis.tja/',category:'emociones',difficulty:5},
+    {word:'angustia',meaning:'极度痛苦',phonetic:'/aŋ.ˈɡwis.tja/',category:'emociones',difficulty:5},
     {word:'angustia',meaning:'焦虑/痛苦',phonetic:'/aŋ.ˈɡus.tja/',category:'emociones',difficulty:5},
     {word:'desvelo',meaning:'焦虑/失眠',phonetic:'/dez.ˈbe.lo/',category:'emociones',difficulty:5},
     {word:'ensimismamiento',meaning:'自我沉醉',phonetic:'/en.si.miz.ma.ˈmjen.to/',category:'emociones',difficulty:5},

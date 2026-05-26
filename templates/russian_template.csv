@@ -1,0 +1,27 @@
+word,meaning,phonetic,category,difficulty
+привет,你好,/prʲɪˈvʲet/,salutations,1
+спасибо,谢谢,/spɐˈsʲibə/,salutations,1
+доброе утро,早上好,/ˈdobrəje ˈutɹə/,salutations,1
+борщ,罗宋汤,/borɕ/,nourriture,2
+пирог,馅饼,/pʲɪˈrok/,nourriture,1
+водка,伏特加,/ˈvotkə/,nourriture,1
+путешествие,旅行,/pʊtʲɪˈʂɛstvʲɪje/,voyage,3
+самолёт,飞机,/səmɐˈlʲot/,voyage,2
+поезд,火车,/ˈpojest/,voyage,1
+один,一,/ɐˈdʲin/,nombres,1
+два,二,/dva/,nombres,1
+три,三,/trʲi/,nombres,1
+мать,母亲,/matʲ/,famille,1
+отец,父亲,/ɐˈtʲet͡s/,famille,1
+красный,红色,/ˈkrasnɨj/,couleurs,1
+синий,蓝色,/ˈsʲinʲɪj/,couleurs,1
+голова,头,/ɡəɫɐˈva/,corps,1
+рука,手,/rʊˈka/,corps,1
+солнце,太阳,/ˈsont͡sə/,meteo,1
+дождь,雨,/doʂtʲ/,meteo,1
+дом,家,/dom/,quotidien,1
+работа,工作,/rɐˈbotə/,quotidien,2
+счастливый,幸福的,/ˈɕːæsʲlʲɪvɨj/,emotions,3
+грустный,悲伤的,/ˈɡrustnɨj/,emotions,2
+библиотека,图书馆,/bʲɪblʲɪɐˈtʲekə/,quotidien,2
+развитие,发展,/rɐzˈvʲitʲɪje/,emotions,3

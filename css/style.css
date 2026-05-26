@@ -519,6 +519,103 @@ body.lang-ja #target-word { font-size: 28px; }
 #input-mode-group { display: none; }
 #input-mode-group.visible { display: flex; }
 
+/* Vocab management panel */
+#vocab-panel {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 40px;
+}
+#vocab-panel > * { max-width: 700px; width: 100%; }
+#vocab-panel h2 { text-align: center; margin-bottom: 20px; color: var(--accent); }
+#vocab-content {
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+}
+.vocab-section { margin-bottom: 24px; }
+.vocab-section:last-child { margin-bottom: 0; }
+.vocab-section h3 { color: var(--accent2); font-size: 16px; margin-bottom: 8px; }
+.vocab-section p { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
+.vocab-lang-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.vocab-download-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.vocab-download-btn:hover { border-color: var(--accent); background: var(--key-hover); }
+.vocab-import-row, .vocab-export-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vocab-import-row select, .vocab-export-row select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--text);
+  font-size: 13px;
+}
+#vocab-file-label {
+  padding: 6px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  transition: border-color 0.2s;
+  min-width: 120px;
+  text-align: center;
+}
+#vocab-file-label:hover { border-color: var(--accent); color: var(--text); }
+#btn-vocab-import, #btn-vocab-export {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#btn-vocab-import:hover, #btn-vocab-export:hover { background: var(--accent2); }
+#vocab-import-status {
+  margin-top: 8px;
+  font-size: 13px;
+  min-height: 20px;
+}
+#vocab-import-status.success { color: var(--green); }
+#vocab-import-status.error { color: var(--red); }
+#btn-close-vocab {
+  margin-top: 16px;
+  padding: 8px 24px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg3);
+  color: var(--text);
+  cursor: pointer;
+}
+
 .hidden { display: none !important; }
 
 @keyframes shake {

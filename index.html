@@ -20,6 +20,7 @@
     <div class="nav-right">
       <button id="btn-manual" title="手册">?</button>
       <button id="btn-stats" title="统计">📊</button>
+      <button id="btn-vocab" title="词汇管理">📚</button>
       <button id="btn-reset" title="重置进度">↺</button>
     </div>
   </nav>
@@ -163,6 +164,59 @@
     <h2 id="manual-title">打字手册</h2>
     <div id="manual-content"></div>
     <button id="btn-close-manual">关闭</button>
+  </div>
+
+  <!-- 词汇管理面板 -->
+  <div id="vocab-panel" class="hidden">
+    <h2 id="vocab-title">词汇管理</h2>
+    <div id="vocab-content">
+      <div class="vocab-section">
+        <h3>下载词汇模板</h3>
+        <p>选择语言下载对应的 CSV 模板文件，填入自定义词汇后导入使用。</p>
+        <div class="vocab-lang-btns">
+          <button class="vocab-download-btn" data-lang="fr">🇫🇷 法语</button>
+          <button class="vocab-download-btn" data-lang="es">🇪🇸 西班牙语</button>
+          <button class="vocab-download-btn" data-lang="it">🇮🇹 意大利语</button>
+          <button class="vocab-download-btn" data-lang="pt">🇵🇹 葡萄牙语</button>
+          <button class="vocab-download-btn" data-lang="ru">🇷🇺 俄语</button>
+          <button class="vocab-download-btn" data-lang="ja">🇯🇵 日语</button>
+        </div>
+      </div>
+      <div class="vocab-section">
+        <h3>导入自定义词汇</h3>
+        <p>上传 CSV 文件替换当前语言的词汇表。格式需与模板一致。</p>
+        <div class="vocab-import-row">
+          <select id="vocab-import-lang">
+            <option value="fr">🇫🇷 法语</option>
+            <option value="es">🇪🇸 西班牙语</option>
+            <option value="it">🇮🇹 意大利语</option>
+            <option value="pt">🇵🇹 葡萄牙语</option>
+            <option value="ru">🇷🇺 俄语</option>
+            <option value="ja">🇯🇵 日语</option>
+          </select>
+          <label id="vocab-file-label" for="vocab-file-input">选择文件...</label>
+          <input type="file" id="vocab-file-input" accept=".csv,.txt" class="hidden">
+          <button id="btn-vocab-import">导入</button>
+        </div>
+        <div id="vocab-import-status"></div>
+      </div>
+      <div class="vocab-section">
+        <h3>导出当前词汇</h3>
+        <p>将当前语言的词汇数据导出为 CSV 文件，方便编辑和备份。</p>
+        <div class="vocab-export-row">
+          <select id="vocab-export-lang">
+            <option value="fr">🇫🇷 法语</option>
+            <option value="es">🇪🇸 西班牙语</option>
+            <option value="it">🇮🇹 意大利语</option>
+            <option value="pt">🇵🇹 葡萄牙语</option>
+            <option value="ru">🇷🇺 俄语</option>
+            <option value="ja">🇯🇵 日语</option>
+          </select>
+          <button id="btn-vocab-export">导出 CSV</button>
+        </div>
+      </div>
+    </div>
+    <button id="btn-close-vocab">关闭</button>
   </div>
 
   <script src="js/keyboard.js"></script>

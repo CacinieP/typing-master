@@ -1,90 +1,119 @@
-<h1 align="center">⌨️ Typing Master</h1>
+# Typing Master - 多语言打字练习
 
-<p align="center"><strong>多语言打字练习 · Multi-language Typing Practice</strong></p>
+一款基于 Electron 的多语言打字练习桌面应用，支持法语、西班牙语、意大利语、葡萄牙语、俄语和日语。
 
-<p align="center">
-  <img src="https://img.shields.io/badge/FR-🇫🇷%20Français-blue?style=flat-square" alt="French">
-  <img src="https://img.shields.io/badge/ES-🇪🇸%20Español-red?style=flat-square" alt="Spanish">
-  <img src="https://img.shields.io/badge/IT-🇮🇹%20Italiano-green?style=flat-square" alt="Italian">
-  <img src="https://img.shields.io/badge/PT-🇵🇹%20Português-teal?style=flat-square" alt="Portuguese">
-  <img src="https://img.shields.io/badge/RU-🇷🇺%20Русский-purple?style=flat-square" alt="Russian">
-  <img src="https://img.shields.io/badge/JA-🇯🇵%20日本語-orange?style=flat-square" alt="Japanese">
-</p>
+## 功能特性
 
-<p align="center">
-  <img src="https://img.shields.io/github/license/CacinieP/typing-master?style=flat-square" alt="License">
-  <img src="https://img.shields.io/github/v/release/CacinieP/typing-master?style=flat-square" alt="Release">
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey?style=flat-square" alt="Platform">
-  <img src="https://img.shields.io/badge/Electron-33-9feaf9?style=flat-square" alt="Electron">
-</p>
+- **6 种语言**：法语 / 西班牙语 / 意大利语 / 葡萄牙语 / 俄语 / 日语
+- **3 种模式**：自由练习、限时挑战、精确模式
+- **虚拟键盘**：实时显示当前需要按的键位，支持 US International、俄语 ЙЦУКЕН、日语 JIS 假名布局
+- **日语双模式**：罗马字输入 / 假名直接输入
+- **难度分级**：欧洲语言 A1-C1 / 日语 JLPT N5-N1
+- **词汇管理**：下载模板、导入自定义词汇、导出当前词汇
+- **练习统计**：WPM 速度、准确率、分类正确率、易错字符分析
 
-<p align="center">
-  <img src="assets/icon.svg" width="128" height="128" alt="Typing Master Icon">
-</p>
+## 安装与运行
 
----
+### 方式一：直接运行安装版
 
-A desktop typing practice app built with **Electron**. Master keyboard layouts and special characters for 6 languages through interactive exercises, real-time feedback, and detailed statistics.
+双击 `Typing Master.exe` 启动。
 
-## ✨ Features
-
-- **6 Languages** — French, Spanish, Italian, Portuguese, Russian, Japanese
-- **Virtual Keyboard** — US International (dead keys), Russian ЙЦУКЕН, Japanese JIS kana
-- **3 Game Modes** — Free practice, timed challenge, precision mode
-- **Difficulty Levels** — A1–C1 (CEFR) / N5–N1 (JLPT)
-- **Real-time Stats** — WPM, accuracy, progress tracking with per-character error analysis
-- **Built-in Manuals** — Typing guides for accented characters, Cyrillic, and kana input
-- **Offline** — No internet required, all data bundled locally
-
-## 📸 Screenshots
-
-| Welcome | Practice | Statistics |
-|---------|----------|------------|
-| Language selection | Virtual keyboard + real-time feedback | Error analysis & category breakdown |
-
-## 🚀 Quick Start
-
-### Download
-
-Grab the latest release from [Releases](https://github.com/CacinieP/typing-master/releases):
-
-- **Windows**: `Typing-Master-Setup-x.x.x.exe` (NSIS installer)
-- **macOS**: `Typing-Master-x.x.x.dmg` (x64 / arm64)
-
-### Development
+### 方式二：从源码运行
 
 ```bash
-git clone https://github.com/CacinieP/typing-master.git
-cd typing-master
+cd french-typing-game
 npm install
 npm start
 ```
 
-### Build from Source
+需要 Node.js 18+ 和 Electron。
 
-```bash
-npm run build:win    # Windows NSIS installer
-npm run build:mac    # macOS DMG (x64 + arm64)
+## 词汇管理
+
+### 下载模板
+
+1. 点击导航栏 📚 按钮
+2. 在「下载词汇模板」区域选择语言
+3. 浏览器会下载对应的 CSV 模板文件
+
+### 导入自定义词汇
+
+1. 按模板格式填写 CSV 文件
+2. 在「导入自定义词汇」区域选择目标语言和文件
+3. 点击「导入」，词汇立即生效
+4. 自定义词汇自动保存到浏览器本地存储
+
+### 导出词汇
+
+点击「导出 CSV」将当前语言的词汇导出为 CSV 文件，方便编辑和备份。
+
+### CSV 格式
+
+**欧洲语言（法/西/意/葡/俄）：**
+
+```csv
+word,meaning,phonetic,category,difficulty
+bonjour,你好,/bɔ̃ʒuʁ/,salutations,1
 ```
 
-## 🗂️ Project Structure
+| 字段 | 说明 |
+|------|------|
+| word | 要练习打字的单词 |
+| meaning | 中文释义 |
+| phonetic | 音标（可选） |
+| category | 分类名称 |
+| difficulty | 难度 1-5（对应 A1-C1） |
+
+**日语：**
+
+```csv
+word,reading,romaji,meaning,level,category,difficulty
+私,わたし,watashi,我,N5,noun_basic,1
+```
+
+| 字段 | 说明 |
+|------|------|
+| word | 汉字/假名 |
+| reading | 假名读法 |
+| romaji | 罗马字 |
+| meaning | 中文释义 |
+| level | JLPT 等级（N5-N1） |
+| category | 分类名称 |
+| difficulty | 难度 1-5（对应 N5-N1） |
+
+## 项目结构
 
 ```
-typing-master/
-├── main.js              # Electron main process
-├── index.html           # App entry point
+├── main.js           # Electron 主进程
+├── index.html        # 主界面
+├── css/style.css     # 样式
 ├── js/
-│   ├── renderer.js      # Game logic & UI
-│   ├── keyboard.js      # Virtual keyboard layouts
-│   └── stats.js         # Statistics & localStorage
-├── words/               # Word data per language
-│   ├── fr.js  es.js  it.js
-│   ├── pt.js  ru.js  ja.js
-├── css/style.css        # Tokyo Night theme
-├── manuals/             # Language-specific typing guides
-└── assets/icon.svg      # App icon
+│   ├── renderer.js   # 游戏逻辑 & 词汇管理
+│   ├── keyboard.js   # 虚拟键盘
+│   └── stats.js      # 统计管理
+├── words/            # 内置词汇数据
+│   ├── fr.js         # 法语
+│   ├── es.js         # 西班牙语
+│   ├── it.js         # 意大利语
+│   ├── pt.js         # 葡萄牙语
+│   ├── ru.js         # 俄语
+│   └── ja.js         # 日语
+├── templates/        # CSV 模板文件
+│   ├── french_template.csv
+│   ├── spanish_template.csv
+│   ├── italian_template.csv
+│   ├── portuguese_template.csv
+│   ├── russian_template.csv
+│   └── japanese_template.csv
+└── manuals/          # 各语言打字手册
 ```
 
-## 📄 License
+## 技术栈
 
-[MIT](LICENSE) © CacinieP
+- Electron 33
+- 原生 HTML/CSS/JavaScript（无框架依赖）
+- localStorage 持久化
+
+## License
+
+MIT
