@@ -1,2 +1,9 @@
 node_modules/
 dist/
+dist-artifacts/
+dist-download/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.VSCodeCounter/

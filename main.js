@@ -8,7 +8,7 @@ function createWindow() {
     minWidth: 1000,
     minHeight: 700,
     title: 'Typing Master - 多语言打字练习',
-    icon: path.join(__dirname, 'icon.png'),
+    icon: path.join(__dirname, 'assets', 'icon.svg'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
