@@ -1,9 +1,9 @@
 {
   "name": "typing-master",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "多语言打字练习 - Multi-language typing practice (FR/ES/IT/PT/RU/JA)",
   "main": "main.js",
-  "author": "Typing Master",
+  "author": "CacinieP",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
