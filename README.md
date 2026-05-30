@@ -4,6 +4,97 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/CacinieP/typing-master/build.yml?branch=main&style=flat-square)](https://github.com/CacinieP/typing-master/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/CacinieP/typing-master?style=flat-square)](LICENSE)
 
+A multilingual typing practice desktop app for people learning to type in a foreign language. Supports French, Spanish, Italian, Portuguese, Russian, and Japanese, with a focus on training accent marks, Cyrillic letters, kana input, and multi-keyboard-layout switching.
+
+## Download
+
+Download the latest version from [Releases](https://github.com/CacinieP/typing-master/releases/latest):
+
+- Windows: `.exe` installer
+- macOS Intel: `.dmg`
+- macOS Apple Silicon: `arm64.dmg`
+
+You can also run from source:
+
+```bash
+git clone https://github.com/CacinieP/typing-master.git
+cd typing-master
+npm install
+npm start
+```
+
+Requires Node.js 18+.
+
+## Highlights
+
+- **6 languages**: French / Spanish / Italian / Portuguese / Russian / Japanese
+- **3 modes**: Free practice, timed challenge, precision mode
+- **Virtual keyboard**: Real-time display of the current key to press
+- **Keyboard layouts**: US International, Russian ЙЦУКЕН, Japanese JIS kana layout
+- **Japanese dual mode**: Romaji input / direct kana input
+- **Difficulty levels**: European languages A1–C1 / Japanese JLPT N5–N1
+- **Vocabulary management**: Download templates, import custom vocabulary, export current vocabulary
+- **Practice statistics**: WPM, accuracy, category accuracy, error-prone character analysis
+
+## Use Cases
+
+| Scenario | Value |
+|---|---|
+| Learning French/Spanish/Italian/Portuguese | Train accent marks and special character input |
+| Learning Russian | Familiarize with the ЙЦУКЕН keyboard layout |
+| Learning Japanese | Switch between romaji input and direct kana input for training |
+| Building custom word lists | Import classroom vocabulary, exam vocabulary, or professional terminology via CSV |
+
+## Vocabulary CSV
+
+European languages:
+
+```csv
+word,meaning,phonetic,category,difficulty
+bonjour,hello,/bɔ̃ʒuʁ/,salutations,1
+```
+
+Japanese:
+
+```csv
+word,reading,romaji,meaning,level,category,difficulty
+私,わたし,watashi,I,N5,noun_basic,1
+```
+
+## Project Structure
+
+```text
+├── main.js           # Electron main process
+├── index.html        # App shell
+├── css/style.css
+├── js/
+│   ├── renderer.js   # Practice logic and vocabulary management
+│   ├── keyboard.js   # Virtual keyboard
+│   └── stats.js      # Practice statistics
+├── words/            # Built-in vocabulary
+├── templates/        # CSV templates
+└── manuals/          # Language-specific typing manuals
+```
+
+## Tech Stack
+
+- Electron 33
+- Native HTML/CSS/JavaScript
+- localStorage persistence
+- GitHub Actions release builds for Windows and macOS
+
+## License
+
+MIT
+
+---
+
+# Typing Master
+
+[![Release](https://img.shields.io/github/v/release/CacinieP/typing-master?style=flat-square)](https://github.com/CacinieP/typing-master/releases/latest)
+[![Build](https://img.shields.io/github/actions/workflow/status/CacinieP/typing-master/build.yml?branch=main&style=flat-square)](https://github.com/CacinieP/typing-master/actions/workflows/build.yml)
+[![License](https://img.shields.io/github/license/CacinieP/typing-master?style=flat-square)](LICENSE)
+
 多语言打字练习桌面应用，面向正在学习外语输入的人。支持法语、西班牙语、意大利语、葡萄牙语、俄语和日语，重点训练重音符号、西里尔字母、假名输入和多键盘布局切换。
 
 ## Download
