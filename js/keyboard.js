@@ -215,6 +215,8 @@ const ACCENT_SEQUENCES = {
   'ü': ['"', 'u'], 'Ü': ['"', 'U'],
   // Cedilla
   'ç': ['AltGr', 'c'], 'Ç': ['AltGr', 'C'],
+  // Eszett (德语)
+  'ß': ['AltGr', 's'],
   // Ligatures
   'œ': ['AltGr', 'o'], 'Œ': ['AltGr', 'O'],
   'æ': ['AltGr', 'a'], 'Æ': ['AltGr', 'A'],

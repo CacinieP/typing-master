@@ -15,6 +15,7 @@
       <button class="lang-btn" data-lang="it">Italiano 意大利语</button>
       <button class="lang-btn" data-lang="pt">Português 葡萄牙语</button>
       <button class="lang-btn" data-lang="ru">Русский 俄语</button>
+      <button class="lang-btn" data-lang="de">Deutsch 德语</button>
       <button class="lang-btn" data-lang="ja">日本語 日语</button>
     </div>
     <div class="nav-right">
@@ -24,6 +25,23 @@
       <button id="btn-reset" title="重置进度">↺</button>
     </div>
   </nav>
+
+  <!-- 语言说明卡（选语言后、控制栏上方显示，可折叠） -->
+  <div id="lang-intro" class="hidden">
+    <div class="lang-intro-header">
+      <span id="lang-intro-icon" class="lang-intro-icon"></span>
+      <div class="lang-intro-titles">
+        <h2 id="lang-intro-title"></h2>
+        <p id="lang-intro-subtitle"></p>
+      </div>
+      <button id="lang-intro-toggle" class="lang-intro-toggle" title="显示/隐藏说明">收起</button>
+    </div>
+    <div id="lang-intro-body" class="lang-intro-body">
+      <p id="lang-intro-desc"></p>
+      <div id="lang-intro-chars" class="lang-intro-chars"></div>
+      <p id="lang-intro-notice"></p>
+    </div>
+  </div>
 
   <!-- 控制栏 -->
   <div id="controls">
@@ -69,8 +87,6 @@
 
   <!-- 主游戏区 -->
   <div id="game-area" class="hidden">
-    <!-- 输入法切换提示 -->
-    <div id="input-notice" class="hidden"></div>
     <!-- 待打文本 -->
     <div id="text-panel">
       <div id="word-display">
@@ -139,6 +155,10 @@
         <div class="flag">🇷🇺</div>
         <div class="lang-name">Русский<br><small>俄语</small></div>
       </div>
+      <div class="welcome-lang-card" data-lang="de">
+        <div class="flag">🇩🇪</div>
+        <div class="lang-name">Deutsch<br><small>德语</small></div>
+      </div>
       <div class="welcome-lang-card" data-lang="ja">
         <div class="flag">🇯🇵</div>
         <div class="lang-name">日本語<br><small>日语</small></div>
@@ -181,6 +201,7 @@
           <button class="vocab-download-btn" data-lang="it">🇮🇹 意大利语</button>
           <button class="vocab-download-btn" data-lang="pt">🇵🇹 葡萄牙语</button>
           <button class="vocab-download-btn" data-lang="ru">🇷🇺 俄语</button>
+          <button class="vocab-download-btn" data-lang="de">🇩🇪 德语</button>
           <button class="vocab-download-btn" data-lang="ja">🇯🇵 日语</button>
         </div>
       </div>
@@ -194,6 +215,7 @@
             <option value="it">🇮🇹 意大利语</option>
             <option value="pt">🇵🇹 葡萄牙语</option>
             <option value="ru">🇷🇺 俄语</option>
+            <option value="de">🇩🇪 德语</option>
             <option value="ja">🇯🇵 日语</option>
           </select>
           <label id="vocab-file-label" for="vocab-file-input">选择文件...</label>
@@ -212,6 +234,7 @@
             <option value="it">🇮🇹 意大利语</option>
             <option value="pt">🇵🇹 葡萄牙语</option>
             <option value="ru">🇷🇺 俄语</option>
+            <option value="de">🇩🇪 德语</option>
             <option value="ja">🇯🇵 日语</option>
           </select>
           <button id="btn-vocab-export">导出 CSV</button>
@@ -229,6 +252,7 @@
   <script src="words/it.js"></script>
   <script src="words/pt.js"></script>
   <script src="words/ru.js"></script>
+  <script src="words/de.js"></script>
   <script src="words/ja.js"></script>
   <script src="js/renderer.js"></script>
 </body>
