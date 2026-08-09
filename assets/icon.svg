@@ -1,92 +1,89 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7aa2f7"/>
-      <stop offset="100%" style="stop-color:#bb9af7"/>
+    <!-- 背景圆角方块渐变：accent → accent2 (135°) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7aa2f7"/>
+      <stop offset="100%" stop-color="#bb9af7"/>
     </linearGradient>
-    <linearGradient id="keyBg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b4261"/>
-      <stop offset="100%" style="stop-color:#24283b"/>
+    <!-- 背景顶面整体高光 -->
+    <linearGradient id="bgGloss" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.12"/>
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+
+    <!-- 键帽主体：顶部亮 → 底部暗 (模拟立体) -->
+    <linearGradient id="keyBody" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#4c557a"/>
+      <stop offset="48%" stop-color="#3b4261"/>
+      <stop offset="100%" stop-color="#24283b"/>
+    </linearGradient>
+    <!-- 键帽顶面高光带 (键帽上 1/3 的光泽) -->
+    <linearGradient id="keyGloss" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- 键面内凹渐变 (刻字面，比键帽暗，模拟凹下去) -->
+    <linearGradient id="keyFace" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#1a1b26"/>
+      <stop offset="100%" stop-color="#24283b"/>
+    </linearGradient>
+
+    <!-- 键帽整体投影 -->
+    <filter id="keyShadow" x="-20%" y="-15%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.45"/>
     </filter>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    <!-- 背景方块投影 -->
+    <filter id="bgShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <!-- 字符发光辉光 (用于多语言字符的光感) -->
+    <filter id="charGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
-  <!-- Background circle -->
-  <circle cx="256" cy="256" r="240" fill="url(#bg)" filter="url(#shadow)"/>
-  <!-- Keyboard outline -->
-  <rect x="56" y="180" width="400" height="200" rx="16" ry="16" fill="url(#keyBg)" stroke="#545c7e" stroke-width="2" filter="url(#shadow)"/>
-  <!-- Row 1: number keys -->
-  <rect x="76" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="112" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="148" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="184" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="220" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="256" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="292" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="328" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="364" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="400" y="196" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <!-- Row 2: QWERTY -->
-  <rect x="84" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="120" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="156" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="192" y="232" width="28" height="28" rx="4" fill="#bb9af7" stroke="#bb9af7" stroke-width="2" filter="url(#glow)"/>
-  <rect x="228" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="264" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="300" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="336" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="372" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="408" y="232" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <!-- Row 3: ASDF -->
-  <rect x="96" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="132" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="168" y="268" width="28" height="28" rx="4" fill="#9ece6a" stroke="#9ece6a" stroke-width="2" filter="url(#glow)"/>
-  <rect x="204" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="240" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="276" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="312" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="348" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="384" y="268" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <!-- Row 4: ZXCV -->
-  <rect x="112" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="148" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="184" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="220" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="256" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="292" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="328" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <rect x="364" y="304" width="28" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <!-- Space bar -->
-  <rect x="168" y="340" width="176" height="28" rx="4" fill="#3b4261" stroke="#545c7e" stroke-width="1"/>
-  <!-- Title text "T" with typing cursor effect -->
-  <text x="256" y="140" text-anchor="middle" font-family="'Segoe UI',system-ui,sans-serif" font-size="100" font-weight="800" fill="#c0caf5">T</text>
-  <text x="256" y="140" text-anchor="middle" font-family="'Segoe UI',system-ui,sans-serif" font-size="100" font-weight="800" fill="url(#bg)" opacity="0.9">T</text>
-  <!-- Cursor blink line -->
-  <rect x="218" y="95" width="4" height="60" rx="2" fill="#9ece6a" opacity="0.9">
-    <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.2s" repeatCount="indefinite"/>
-  </rect>
-  <!-- Speed lines under the cursor key -->
-  <line x1="280" y1="104" x2="310" y2="104" stroke="#7aa2f7" stroke-width="2" opacity="0.6">
-    <animate attributeName="x2" values="310;330;310" dur="0.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.8s" repeatCount="indefinite"/>
-  </line>
-  <line x1="280" y1="114" x2="300" y2="114" stroke="#bb9af7" stroke-width="2" opacity="0.5">
-    <animate attributeName="x2" values="300;320;300" dur="0.6s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.1;0.5" dur="0.6s" repeatCount="indefinite"/>
-  </line>
-  <line x1="280" y1="124" x2="290" y2="124" stroke="#7aa2f7" stroke-width="2" opacity="0.4">
-    <animate attributeName="x2" values="290;310;290" dur="0.7s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="0.7s" repeatCount="indefinite"/>
-  </line>
-  <!-- Globe/language icon hint at bottom -->
-  <circle cx="256" cy="440" r="16" fill="none" stroke="#545c7e" stroke-width="1.5"/>
-  <ellipse cx="256" cy="440" rx="8" ry="16" fill="none" stroke="#545c7e" stroke-width="1"/>
-  <line x1="240" y1="440" x2="272" y2="440" stroke="#545c7e" stroke-width="1"/>
-  <!-- Language text -->
-  <text x="256" y="476" text-anchor="middle" font-family="'Segoe UI',system-ui,sans-serif" font-size="14" fill="#545c7e" letter-spacing="2">FR ES IT PT RU JA</text>
+
+  <!-- 圆角方块背景 -->
+  <rect x="46" y="46" width="420" height="420" rx="92" ry="92" fill="url(#bgGrad)" filter="url(#bgShadow)"/>
+  <!-- 背景顶面高光覆盖 -->
+  <rect x="46" y="46" width="420" height="420" rx="92" ry="92" fill="url(#bgGloss)"/>
+
+  <!-- 键帽整体 (主体 + 高光 + 投影) -->
+  <g filter="url(#keyShadow)">
+    <rect x="116" y="116" width="280" height="280" rx="48" ry="48" fill="url(#keyBody)"/>
+    <rect x="116" y="116" width="280" height="112" rx="48" ry="48" fill="url(#keyGloss)"/>
+  </g>
+
+  <!-- 键面内凹 (居中略小一块，深色) -->
+  <rect x="142" y="142" width="228" height="228" rx="34" ry="34" fill="url(#keyFace)"/>
+  <!-- 内凹顶部暗影 (内阴影模拟) -->
+  <rect x="142" y="142" width="228" height="10" rx="5" ry="5" fill="#000000" opacity="0.35"/>
+
+  <!-- 多语言字符叠加：拉丁 A (主，最大，居中偏左上) + 西里尔 Ж (右上，紫) + 假名 あ (右下，绿) -->
+  <!-- 三字符代表三大语系，错落叠放，体现"多语言打字"核心卖点 -->
+
+  <!-- 主字符 A：拉丁字母 (法/西/意/葡)，最大，白色，居中 -->
+  <text x="246" y="320" text-anchor="middle"
+        font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="180" font-weight="800" fill="#000000" opacity="0.5">A</text>
+  <text x="244" y="318" text-anchor="middle"
+        font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="180" font-weight="800" fill="#c0caf5">A</text>
+  <text x="244" y="316" text-anchor="middle"
+        font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="180" font-weight="800" fill="#ffffff" opacity="0.07">A</text>
+
+  <!-- 西里尔 Ж：俄语，紫色，右上角，略小，半透明叠加 -->
+  <text x="332" y="212" text-anchor="middle"
+        font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="76" font-weight="700" fill="#bb9af7" opacity="0.92" filter="url(#charGlow)">Ж</text>
+
+  <!-- 假名 あ：日语，绿色，右下角，略小，半透明叠加 -->
+  <text x="340" y="350" text-anchor="middle"
+        font-family="'Noto Sans JP', 'Yu Gothic', 'Meiryo', system-ui, sans-serif"
+        font-size="72" font-weight="600" fill="#9ece6a" opacity="0.92" filter="url(#charGlow)">あ</text>
 </svg>

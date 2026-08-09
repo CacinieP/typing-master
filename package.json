@@ -17,6 +17,7 @@
     "directories": {
       "output": "dist"
     },
+    "icon": "build/icon.png",
     "files": [
       "index.html",
       "main.js",
