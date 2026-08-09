@@ -49,14 +49,28 @@ jobs:
         if: matrix.platform == 'win'
         run: npm run build:win
 
+      - name: Configure macOS signing env
+        if: matrix.platform == 'mac'
+        env:
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        # 仅当证书 secret 非空时才导出 CSC_* 变量。
+        # secret 缺失时变量保持未定义 → electron-builder 自动跳过签名(行为已验证)，
+        # 而非注入空字符串导致 "not a file" 错误。
+        run: |
+          if [ -n "$CSC_LINK" ]; then
+            echo "CSC_LINK=$CSC_LINK" >> "$GITHUB_ENV"
+            echo "CSC_KEY_PASSWORD=$CSC_KEY_PASSWORD" >> "$GITHUB_ENV"
+            echo "::notice::macOS 签名已启用(证书已配置)"
+          else
+            echo "::notice::macOS 签名已跳过(未配置 MACOS_CERTIFICATE secret)"
+          fi
+
       - name: Build Electron app (macOS)
         if: matrix.platform == 'mac'
         run: npm run build:mac
         env:
-          # 签名（Secret 不存在时为空，electron-builder 自动跳过签名）
-          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
-          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          # 公证（全部存在时才公证；任一缺失则只签名不公证）
+          # 公证（全部存在时才公证；任一缺失则只签名不公证 —— notarize.js 内部判断）
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
