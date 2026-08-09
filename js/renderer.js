@@ -7,7 +7,7 @@
   const langNames = {
     fr: '法语 Français', es: '西班牙语 Español',
     it: '意大利语 Italiano', pt: '葡萄牙语 Português',
-    ru: '俄语 Русский', ja: '日本語 日语'
+    ru: '俄语 Русский', de: '德语 Deutsch', ja: '日本語 日语'
   };
 
   // State
@@ -56,7 +56,18 @@
   const statTimer = $('stat-timer');
   const kbContainer = $('keyboard');
   const kbHint = $('keyboard-hint');
-  const inputNotice = $('input-notice');
+  // 语言说明卡（landing）DOM
+  const langIntro = $('lang-intro');
+  const langIntroIcon = $('lang-intro-icon');
+  const langIntroTitle = $('lang-intro-title');
+  const langIntroSubtitle = $('lang-intro-subtitle');
+  const langIntroDesc = $('lang-intro-desc');
+  const langIntroChars = $('lang-intro-chars');
+  const langIntroNotice = $('lang-intro-notice');
+  const langIntroBody = $('lang-intro-body');
+  const langIntroToggle = $('lang-intro-toggle');
+  // 说明卡折叠状态：记忆用户偏好（true=展开, false=收起）
+  let langIntroCollapsed = localStorage.getItem('typingmaster_intro_collapsed') === '1';
 
   // Get the typing target string for the current word
   function getTypingTarget(w) {
@@ -76,6 +87,13 @@
     });
     document.querySelectorAll('.welcome-lang-card').forEach(card => {
       card.addEventListener('click', () => selectLanguage(card.dataset.lang));
+    });
+
+    // 说明卡折叠切换：点击切换展开/收起，状态持久化到 localStorage
+    langIntroToggle.addEventListener('click', () => {
+      langIntroCollapsed = !langIntroCollapsed;
+      localStorage.setItem('typingmaster_intro_collapsed', langIntroCollapsed ? '1' : '0');
+      applyLangIntroCollapsed();
     });
 
     $('btn-start').addEventListener('click', startGame);
@@ -99,7 +117,7 @@
     inputModeSelect.addEventListener('change', () => {
       inputMode = inputModeSelect.value;
       kb.setInputMode(inputMode);
-      updateInputNotice();
+      updateLangIntro();
       if (gameActive) showCurrentWord();
     });
 
@@ -141,7 +159,7 @@
     // Set keyboard
     kb.setLanguage(lang, inputMode);
 
-    updateInputNotice();
+    updateLangIntro();
 
     // Show controls, hide welcome
     welcomeEl.classList.add('hidden');
@@ -153,28 +171,98 @@
     typingInput.focus();
   }
 
-  // 根据当前语言/输入模式显示输入法切换提示横幅。
-  // 虚拟键盘只负责显示，真实输入依赖系统输入法，必须提示用户切换。
-  function updateInputNotice() {
+  // 各语言 landing 说明卡内容。选语言后在控制栏上方展示，
+  // 让用户在开始打字前了解这门语言的打字特点、特殊字符、输入法提示。
+  const LANG_INTRO = {
+    fr: {
+      icon: '🇫🇷', title: '法语 Français', subtitle: 'Romance 语族 · 拉丁字母 + 重音符',
+      desc: '法语使用锐音符(é)、钝音符(è)、长音符(ê)、分音符(ë)和软音符(ç)。用 US International 键盘的死键组合即可输入全部重音字符。',
+      chars: ['é', 'è', 'ê', 'ë', 'ç', 'à', 'ù', 'â', 'ô', 'î', 'œ', 'æ'],
+      notice: '⌨ 切换到 US International 键盘，重音字符用死键组合输入（如 é = 先按 \' 再按 e）'
+    },
+    es: {
+      icon: '🇪🇸', title: '西班牙语 Español', subtitle: 'Romance 语族 · 拉丁字母 + 重音符',
+      desc: '西班牙语的特色字符是 ñ（带波浪号的 n）、重音元音 á é í ó ú，以及反问号 ¿ 和反叹号 ¡。',
+      chars: ['á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü', '¿', '¡'],
+      notice: '⌨ 切换到 US International 键盘，ñ 用先按 ~ 再按 n，重音元音用先按 \' 再按元音'
+    },
+    it: {
+      icon: '🇮🇹', title: '意大利语 Italiano', subtitle: 'Romance 语族 · 拉丁字母 + 重音符',
+      desc: '意大利语主要使用钝音符（à è ì ò ù）和少量锐音符（é）。重音符号是意大利语拼写的一部分。',
+      chars: ['à', 'è', 'é', 'ì', 'ò', 'ù'],
+      notice: '⌨ 切换到 US International 键盘，钝音符用先按 ` 再按元音'
+    },
+    pt: {
+      icon: '🇵🇹', title: '葡萄牙语 Português', subtitle: 'Romance 语族 · 拉丁字母 + 重音符',
+      desc: '葡萄牙语有较多特殊字符：鼻音化的 ã õ、软音符 ç、各种重音(á é â ê ô à)等，是重音最丰富的欧语之一。',
+      chars: ['ã', 'õ', 'ç', 'á', 'é', 'â', 'ê', 'ô', 'à'],
+      notice: '⌨ 切换到 US International 键盘，ã/õ 用先按 ~ 再按元音，ç 用 AltGr+c'
+    },
+    de: {
+      icon: '🇩🇪', title: '德语 Deutsch', subtitle: '日耳曼语族 · 拉丁字母 + Umlaut + ß',
+      desc: '德语特有的字符是变元音 ä ö ü 和 Eszett(ß)。用 US International 键盘的分音符死键(\")可输入 ä ö ü，ß 用 AltGr+s。所有名词首字母大写。',
+      chars: ['ä', 'ö', 'ü', 'ß', 'Ä', 'Ö', 'Ü'],
+      notice: '⌨ 切换到 US International 键盘：ä = 先按 \" 再按 a，ß = AltGr+s'
+    },
+    ru: {
+      icon: '🇷🇺', title: '俄语 Русский', subtitle: '斯拉夫语族 · 西里尔字母 ЙЦУКЕН 布局',
+      desc: '俄语使用 33 个西里尔字母，标准键盘布局是 ЙЦУКЕН（与英文 QWERTY 键位不同）。注意区分易混字母：ш/щ、ы/и、ъ/ь。',
+      chars: ['й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю'],
+      notice: '⌨ 请切换到俄语（ЙЦУКЕН）系统输入法后开始练习'
+    },
+    ja: {
+      icon: '🇯🇵', title: '日本語 日语', subtitle: '日本语系 · 假名 + 汉字 + 罗马字',
+      desc: '日语打字有两种模式：罗马字模式（用英文键盘按 watashi 等罗马字，适合初学者）和假名模式（JIS 假名键盘，每键对应一个假名）。屏幕上方显示汉字，下方显示振假名读音。',
+      chars: ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ'],
+      notice: '⌨ 罗马字模式直接用英文键盘输入即可（如 watashi）'
+    }
+  };
+
+  // 渲染语言说明卡。selectLanguage 和 inputMode 切换时调用。
+  function updateLangIntro() {
     if (!currentLang) {
-      inputNotice.classList.add('hidden');
+      langIntro.classList.add('hidden');
       return;
     }
-    let msg = '';
-    if (currentLang === 'ru') {
-      msg = '⌨ 请切换到俄语（ЙЦУКЕН）系统输入法后开始练习';
-    } else if (currentLang === 'ja') {
-      if (inputMode === 'kana') {
-        msg = '⌨ 请切换到日语 JIS 假名输入法';
-      } else {
-        msg = '直接用英文键盘输入罗马字即可（如 watashi）';
-      }
-    } else {
-      // fr / es / it / pt
-      msg = '⌨ 请切换到该语言的系统输入法，或使用 US International 键盘（重音字符用死键组合输入）';
+    const data = LANG_INTRO[currentLang];
+    if (!data) {
+      langIntro.classList.add('hidden');
+      return;
     }
-    inputNotice.textContent = msg;
-    inputNotice.classList.remove('hidden');
+    langIntroIcon.textContent = data.icon;
+    langIntroTitle.textContent = data.title;
+    langIntroSubtitle.textContent = data.subtitle;
+    langIntroDesc.textContent = data.desc;
+    // 字符标签
+    langIntroChars.innerHTML = '';
+    data.chars.forEach(ch => {
+      const chip = document.createElement('span');
+      chip.className = 'char-chip';
+      chip.textContent = ch;
+      langIntroChars.appendChild(chip);
+    });
+    // notice：日语根据 inputMode 动态
+    if (currentLang === 'ja' && inputMode === 'kana') {
+      langIntroNotice.textContent = '⌨ 请切换到日语 JIS 假名输入法（每键对应一个假名）';
+    } else {
+      langIntroNotice.textContent = data.notice;
+    }
+    langIntro.classList.remove('hidden');
+    // 同步折叠状态（切语言后保持用户的展开/收起偏好）
+    applyLangIntroCollapsed();
+  }
+
+  // 应用说明卡的折叠状态到 DOM：收起时隐藏 body，按钮文案变"展开"
+  function applyLangIntroCollapsed() {
+    if (langIntroCollapsed) {
+      langIntroBody.classList.add('hidden');
+      langIntroToggle.textContent = '展开';
+      langIntroToggle.classList.add('collapsed');
+    } else {
+      langIntroBody.classList.remove('hidden');
+      langIntroToggle.textContent = '收起';
+      langIntroToggle.classList.remove('collapsed');
+    }
   }
 
   function updateDifficultyLabels() {
@@ -474,7 +562,7 @@
       stats.renderStats(currentLang, container);
     } else {
       let html = '';
-      for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'ja']) {
+      for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'de', 'ja']) {
         const s = stats.getStats(lang);
         if (s) {
           html += `<h3 style="margin-top:12px">${langNames[lang]}</h3>`;
@@ -549,6 +637,15 @@
           ['í', "'", 'i', ''], ['ó', "'", 'o', ''], ['ú', "'", 'u', ''],
           ['â', '^', 'a', '长音符'], ['ê', '^', 'e', ''], ['ô', '^', 'o', ''],
           ['à', '`', 'a', '钝音符'],
+        ]
+      },
+      de: {
+        title: '德语特殊字符',
+        chars: [
+          ['ä', '"', 'a', '变元音 Umlaut'], ['ö', '"', 'o', '变元音 Umlaut'],
+          ['ü', '"', 'u', '变元音 Umlaut'],
+          ['Ä', '"', 'A', '大写变元音'], ['Ö', '"', 'O', '大写变元音'], ['Ü', '"', 'U', '大写变元音'],
+          ['ß', 'AltGr', 's', 'Eszett / scharfes S'],
         ]
       }
     };
@@ -727,7 +824,7 @@
     japanese: 'word,reading,romaji,meaning,level,category,difficulty'
   };
 
-  const LANG_TYPE = { fr: 'european', es: 'european', it: 'european', pt: 'european', ru: 'european', ja: 'japanese' };
+  const LANG_TYPE = { fr: 'european', es: 'european', it: 'european', pt: 'european', ru: 'european', de: 'european', ja: 'japanese' };
 
   function escapeCSV(val) {
     const s = String(val == null ? '' : val);
@@ -777,7 +874,14 @@
           'спасибо,谢谢,/spɐˈsʲibə/,salutations,1\n' +
           'водка,伏特加,/ˈvotkə/,nourriture,1\n' +
           'библиотека,图书馆,/bʲɪblʲɪɐˈtʲekə/,quotidien,2\n' +
-          'развитие,发展,/rɐzˈvʲitʲɪje/,emotions,3\n'
+          'развитие,发展,/rɐzˈvʲitʲɪje/,emotions,3\n',
+      de: 'hallo,你好,/ˈhalo/,begruessung,1\n' +
+          'danke,谢谢,/ˈdaŋkə/,begruessung,1\n' +
+          'Grüße,问候,/ˈɡʁyːsə/,begruessung,3\n' +
+          'Mädchen,女孩,/ˈmɛːtçn̩/,familie,2\n' +
+          'Straße,街道,/ˈʃtʁaːsə/,reisen,2\n' +
+          'Bücher,书籍,/ˈbyːçɐ/,alltag,3\n' +
+          'schön,美丽的,/ʃøːn/,emotions,2\n'
     };
 
     if (type === 'japanese') {
@@ -805,7 +909,7 @@
         csv += [escapeCSV(w.word), escapeCSV(w.meaning), escapeCSV(w.phonetic), escapeCSV(w.category), w.difficulty].join(',') + '\n';
       }
     });
-    const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', ja: 'japanese' };
+    const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', de: 'german', ja: 'japanese' };
     downloadFile((names[lang] || lang) + '_vocabulary.csv', csv);
   }
 
@@ -924,7 +1028,7 @@
     document.querySelectorAll('.vocab-download-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const lang = btn.dataset.lang;
-        const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', ja: 'japanese' };
+        const names = { fr: 'french', es: 'spanish', it: 'italian', pt: 'portuguese', ru: 'russian', de: 'german', ja: 'japanese' };
         downloadFile((names[lang] || lang) + '_template.csv', generateTemplate(lang));
       });
     });
@@ -997,7 +1101,7 @@
   }
 
   function loadCustomVocab() {
-    for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'ja']) {
+    for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'de', 'ja']) {
       try {
         const saved = localStorage.getItem('typingmaster_custom_' + lang);
         if (saved) {

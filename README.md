@@ -4,7 +4,7 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/CacinieP/typing-master/build.yml?branch=main&style=flat-square)](https://github.com/CacinieP/typing-master/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/CacinieP/typing-master?style=flat-square)](LICENSE)
 
-A multilingual typing practice desktop app for people learning to type in a foreign language. Supports French, Spanish, Italian, Portuguese, Russian, and Japanese, with a focus on training accent marks, Cyrillic letters, kana input, and multi-keyboard-layout switching.
+A multilingual typing practice desktop app for people learning to type in a foreign language. Supports French, Spanish, Italian, Portuguese, Russian, German, and Japanese, with a focus on training accent marks, Cyrillic letters, kana input, and multi-keyboard-layout switching.
 
 ## Download
 
@@ -27,7 +27,7 @@ Requires Node.js 18+.
 
 ## Highlights
 
-- **6 languages**: French / Spanish / Italian / Portuguese / Russian / Japanese
+- **7 languages**: French / Spanish / Italian / Portuguese / Russian / German / Japanese
 - **3 modes**: Free practice, timed challenge, precision mode
 - **Virtual keyboard**: Real-time display of the current key to press
 - **Keyboard layouts**: US International, Russian ЙЦУКЕН, Japanese JIS kana layout
@@ -95,7 +95,7 @@ MIT
 [![Build](https://img.shields.io/github/actions/workflow/status/CacinieP/typing-master/build.yml?branch=main&style=flat-square)](https://github.com/CacinieP/typing-master/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/CacinieP/typing-master?style=flat-square)](LICENSE)
 
-多语言打字练习桌面应用，面向正在学习外语输入的人。支持法语、西班牙语、意大利语、葡萄牙语、俄语和日语，重点训练重音符号、西里尔字母、假名输入和多键盘布局切换。
+多语言打字练习桌面应用，面向正在学习外语输入的人。支持法语、西班牙语、意大利语、葡萄牙语、俄语、德语和日语，重点训练重音符号、西里尔字母、假名输入和多键盘布局切换。
 
 ## Download
 
@@ -118,7 +118,7 @@ npm start
 
 ## Highlights
 
-- **6 种语言**：法语 / 西班牙语 / 意大利语 / 葡萄牙语 / 俄语 / 日语
+- **7 种语言**：法语 / 西班牙语 / 意大利语 / 葡萄牙语 / 俄语 / 德语 / 日语
 - **3 种模式**：自由练习、限时挑战、精确模式
 - **虚拟键盘**：实时显示当前需要按的键位
 - **键盘布局**：US International、俄语 ЙЦУКЕН、日语 JIS 假名布局

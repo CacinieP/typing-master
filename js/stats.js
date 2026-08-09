@@ -95,7 +95,7 @@ class StatsManager {
       return;
     }
 
-    const langNames = { fr: '法语 Français', es: '西班牙语 Español', it: '意大利语 Italiano', pt: '葡萄牙语 Português', ru: '俄语 Русский' };
+    const langNames = { fr: '法语 Français', es: '西班牙语 Español', it: '意大利语 Italiano', pt: '葡萄牙语 Português', ru: '俄语 Русский', de: '德语 Deutsch', ja: '日本語 日语' };
     let html = `<h3 style="text-align:center;margin-bottom:16px">${langNames[lang] || lang}</h3>`;
 
     // Summary
