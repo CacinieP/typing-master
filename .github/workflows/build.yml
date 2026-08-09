@@ -32,6 +32,19 @@ jobs:
         env:
           ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
 
+      - name: Prepare macOS signing certificate
+        if: matrix.platform == 'mac' && env.CSC_LINK != ''
+        env:
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
+        run: |
+          echo $CSC_LINK | base64 -d > certificate.p12
+          security create-keychain -p keychainpassword build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p keychainpassword build.keychain
+          security import certificate.p12 -k build.keychain -P "${{ secrets.MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k keychainpassword build.keychain
+          rm -f certificate.p12
+
       - name: Build Electron app (Windows)
         if: matrix.platform == 'win'
         run: npm run build:win
@@ -39,6 +52,14 @@ jobs:
       - name: Build Electron app (macOS)
         if: matrix.platform == 'mac'
         run: npm run build:mac
+        env:
+          # 签名（Secret 不存在时为空，electron-builder 自动跳过签名）
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          # 公证（全部存在时才公证；任一缺失则只签名不公证）
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
