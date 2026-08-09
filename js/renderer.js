@@ -56,6 +56,7 @@
   const statTimer = $('stat-timer');
   const kbContainer = $('keyboard');
   const kbHint = $('keyboard-hint');
+  const inputNotice = $('input-notice');
 
   // Get the typing target string for the current word
   function getTypingTarget(w) {
@@ -98,6 +99,7 @@
     inputModeSelect.addEventListener('change', () => {
       inputMode = inputModeSelect.value;
       kb.setInputMode(inputMode);
+      updateInputNotice();
       if (gameActive) showCurrentWord();
     });
 
@@ -139,6 +141,8 @@
     // Set keyboard
     kb.setLanguage(lang, inputMode);
 
+    updateInputNotice();
+
     // Show controls, hide welcome
     welcomeEl.classList.add('hidden');
     $('controls').classList.remove('hidden');
@@ -147,6 +151,30 @@
     resultPanel.classList.add('hidden');
 
     typingInput.focus();
+  }
+
+  // 根据当前语言/输入模式显示输入法切换提示横幅。
+  // 虚拟键盘只负责显示，真实输入依赖系统输入法，必须提示用户切换。
+  function updateInputNotice() {
+    if (!currentLang) {
+      inputNotice.classList.add('hidden');
+      return;
+    }
+    let msg = '';
+    if (currentLang === 'ru') {
+      msg = '⌨ 请切换到俄语（ЙЦУКЕН）系统输入法后开始练习';
+    } else if (currentLang === 'ja') {
+      if (inputMode === 'kana') {
+        msg = '⌨ 请切换到日语 JIS 假名输入法';
+      } else {
+        msg = '直接用英文键盘输入罗马字即可（如 watashi）';
+      }
+    } else {
+      // fr / es / it / pt
+      msg = '⌨ 请切换到该语言的系统输入法，或使用 US International 键盘（重音字符用死键组合输入）';
+    }
+    inputNotice.textContent = msg;
+    inputNotice.classList.remove('hidden');
   }
 
   function updateDifficultyLabels() {
@@ -250,7 +278,8 @@
         html += `<span class="char pending">${ch}</span>`;
       }
       targetWord.innerHTML = html;
-      typingInput.maxLength = target.length;
+      // 不设 maxLength：日语假名输入法可能产生多码组合，
+      // 且 romaji 里促音/拨音/长音的按键数与目标字符数不一致。
     } else {
       // Non-Japanese
       kanjiDisplay.classList.add('hidden');
@@ -265,7 +294,8 @@
         html += `<span class="char pending">${ch}</span>`;
       }
       targetWord.innerHTML = html;
-      typingInput.maxLength = w.word.length;
+      // 不设 maxLength：欧语重音字符用 US International 死键输入时，
+      // 死键中间态（如 café 的 caf'）会先占满长度，导致最后的字母无法输入。
     }
 
     charFeedback.textContent = '';
@@ -358,6 +388,15 @@
     if (!gameActive) return;
     if (e.key === 'Escape') {
       endGame();
+      return;
+    }
+    // Backspace: 整词重置当前词的高亮状态，让用户重新打。
+    // 逐字符回退在重音/死键/假名组合输入下位置同步很脆弱，整词重置更可靠。
+    // 计数器（correct/wrong/charErrors）只在词打满时结算，Backspace 不影响它们。
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      typingInput.value = '';
+      showCurrentWord();
     }
   }
 
@@ -415,6 +454,7 @@
       <div class="result-stat"><div class="rs-label">错误</div><div class="rs-value" style="color:var(--red)">${wrongCount}</div></div>
       <div class="result-stat"><div class="rs-label">用时</div><div class="rs-value">${Math.round(elapsed * 60)}s</div></div>
       <div class="result-stat"><div class="rs-label">词汇</div><div class="rs-value">${wordIndex}</div></div>
+      ${gameMode === 'precision' ? `<div class="result-stat"><div class="rs-label">错误字符</div><div class="rs-value" style="color:var(--red)">${precisionErrors}</div></div>` : ''}
     `;
   }
 
