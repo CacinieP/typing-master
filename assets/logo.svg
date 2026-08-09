@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320">
+  <defs>
+    <!-- 文字渐变：孔雀青 → 亮绿 (与图标配色一致) -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0e8b8b"/>
+      <stop offset="55%" stop-color="#2bb5b5"/>
+      <stop offset="100%" stop-color="#6bc4b5"/>
+    </linearGradient>
+    <!-- 文字底部柔和投影 -->
+    <filter id="textShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+
+    <!-- ====== 左侧小图标的内联定义(孔雀青键帽 + A/Ж/あ) ====== -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e8b8b"/>
+      <stop offset="100%" stop-color="#6bc4b5"/>
+    </linearGradient>
+    <linearGradient id="bgGloss" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="keyBody" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#243841"/>
+      <stop offset="48%" stop-color="#1a262b"/>
+      <stop offset="100%" stop-color="#0f1419"/>
+    </linearGradient>
+    <linearGradient id="keyGloss" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="keyFace" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#0a1014"/>
+      <stop offset="100%" stop-color="#0f181c"/>
+    </linearGradient>
+    <filter id="keyShadow" x="-20%" y="-15%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="bgShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="charGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- 完整图标作为可复用符号(viewBox 512) -->
+    <symbol id="brandIcon" viewBox="0 0 512 512">
+      <rect x="46" y="46" width="420" height="420" rx="92" ry="92" fill="url(#bgGrad)" filter="url(#bgShadow)"/>
+      <rect x="46" y="46" width="420" height="420" rx="92" ry="92" fill="url(#bgGloss)"/>
+      <g filter="url(#keyShadow)">
+        <rect x="116" y="116" width="280" height="280" rx="48" ry="48" fill="url(#keyBody)"/>
+        <rect x="116" y="116" width="280" height="112" rx="48" ry="48" fill="url(#keyGloss)"/>
+      </g>
+      <rect x="142" y="142" width="228" height="228" rx="34" ry="34" fill="url(#keyFace)"/>
+      <rect x="142" y="142" width="228" height="10" rx="5" ry="5" fill="#000000" opacity="0.4"/>
+      <text x="246" y="320" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="180" font-weight="800" fill="#000000" opacity="0.5">A</text>
+      <text x="244" y="318" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="180" font-weight="800" fill="#c9d6df">A</text>
+      <text x="244" y="316" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="180" font-weight="800" fill="#ffffff" opacity="0.08">A</text>
+      <text x="332" y="212" text-anchor="middle" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="76" font-weight="700" fill="#6bc4b5" opacity="0.95" filter="url(#charGlow)">Ж</text>
+      <text x="340" y="350" text-anchor="middle" font-family="'Noto Sans JP', 'Yu Gothic', 'Meiryo', system-ui, sans-serif" font-size="72" font-weight="600" fill="#9ee0d3" opacity="0.95" filter="url(#charGlow)">あ</text>
+    </symbol>
+  </defs>
+
+  <!-- 透明背景横版 logo: 1280 × 320 -->
+
+  <!-- 左侧图标 (240×240,垂直居中) -->
+  <use href="#brandIcon" x="40" y="40" width="240" height="240"/>
+
+  <!-- 右侧文字 TypingMaster (现代粗体几何无衬线) -->
+  <!-- 基线 y=210,字重 800,字间距 适度拉开体现几何感 -->
+  <g filter="url(#textShadow)">
+    <!-- 描边底层(深色,营造立体) -->
+    <text x="320" y="208" font-family="'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif"
+          font-size="124" font-weight="800" letter-spacing="-2"
+          fill="#000000" opacity="0.45">TypingMaster</text>
+    <!-- 主文字层(孔雀青渐变) -->
+    <text x="318" y="206" font-family="'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif"
+          font-size="124" font-weight="800" letter-spacing="-2"
+          fill="url(#textGrad)">TypingMaster</text>
+    <!-- 顶部高光层(白,极淡,模拟金属光泽) -->
+    <text x="318" y="204" font-family="'Segoe UI', 'Helvetica Neue', Arial, system-ui, sans-serif"
+          font-size="124" font-weight="800" letter-spacing="-2"
+          fill="#ffffff" opacity="0.08">TypingMaster</text>
+  </g>
+
+  <!-- 副标语(可选,小字,品牌定位) -->
+  <text x="322" y="252" font-family="'Segoe UI', system-ui, sans-serif"
+        font-size="26" font-weight="500" letter-spacing="6"
+        fill="#5a6b73" opacity="0.9">MULTI-LANGUAGE TYPING PRACTICE</text>
+</svg>
