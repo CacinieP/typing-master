@@ -1,43 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- 背景圆角方块渐变：accent → accent2 (135°) -->
+    <!-- 背景圆角方块渐变：孔雀青系(accent → green),135°,无金色 -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7aa2f7"/>
-      <stop offset="100%" stop-color="#bb9af7"/>
+      <stop offset="0%" stop-color="#0e8b8b"/>
+      <stop offset="100%" stop-color="#6bc4b5"/>
     </linearGradient>
     <!-- 背景顶面整体高光 -->
     <linearGradient id="bgGloss" x1="50%" y1="0%" x2="50%" y2="100%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
       <stop offset="45%" stop-color="#ffffff" stop-opacity="0.03"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.18"/>
     </linearGradient>
 
-    <!-- 键帽主体：顶部亮 → 底部暗 (模拟立体) -->
+    <!-- 键帽主体：顶部亮 → 底部暗 (对齐 app 深色配色,无紫调) -->
     <linearGradient id="keyBody" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#4c557a"/>
-      <stop offset="48%" stop-color="#3b4261"/>
-      <stop offset="100%" stop-color="#24283b"/>
+      <stop offset="0%" stop-color="#243841"/>
+      <stop offset="48%" stop-color="#1a262b"/>
+      <stop offset="100%" stop-color="#0f1419"/>
     </linearGradient>
     <!-- 键帽顶面高光带 (键帽上 1/3 的光泽) -->
     <linearGradient id="keyGloss" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
     <!-- 键面内凹渐变 (刻字面，比键帽暗，模拟凹下去) -->
     <linearGradient id="keyFace" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#1a1b26"/>
-      <stop offset="100%" stop-color="#24283b"/>
+      <stop offset="0%" stop-color="#0a1014"/>
+      <stop offset="100%" stop-color="#0f181c"/>
     </linearGradient>
 
     <!-- 键帽整体投影 -->
     <filter id="keyShadow" x="-20%" y="-15%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.45"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.5"/>
     </filter>
     <!-- 背景方块投影 -->
     <filter id="bgShadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
     </filter>
-    <!-- 字符发光辉光 (用于多语言字符的光感) -->
+    <!-- 字符发光辉光 (青绿色调,无金) -->
     <filter id="charGlow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="3.5" result="blur"/>
       <feMerge>
@@ -61,29 +61,29 @@
   <!-- 键面内凹 (居中略小一块，深色) -->
   <rect x="142" y="142" width="228" height="228" rx="34" ry="34" fill="url(#keyFace)"/>
   <!-- 内凹顶部暗影 (内阴影模拟) -->
-  <rect x="142" y="142" width="228" height="10" rx="5" ry="5" fill="#000000" opacity="0.35"/>
+  <rect x="142" y="142" width="228" height="10" rx="5" ry="5" fill="#000000" opacity="0.4"/>
 
-  <!-- 多语言字符叠加：拉丁 A (主，最大，居中偏左上) + 西里尔 Ж (右上，紫) + 假名 あ (右下，绿) -->
-  <!-- 三字符代表三大语系，错落叠放，体现"多语言打字"核心卖点 -->
+  <!-- 多语言字符叠加：拉丁 A (主，最大) + 西里尔 Ж (右上) + 假名 あ (右下) -->
+  <!-- 三字符代表三大语系,配色统一为青绿/亮白系,无金色 -->
 
-  <!-- 主字符 A：拉丁字母 (法/西/意/葡)，最大，白色，居中 -->
+  <!-- 主字符 A：拉丁字母 (法/西/意/葡)，最大，亮白,居中 -->
   <text x="246" y="320" text-anchor="middle"
         font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
         font-size="180" font-weight="800" fill="#000000" opacity="0.5">A</text>
   <text x="244" y="318" text-anchor="middle"
         font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
-        font-size="180" font-weight="800" fill="#c0caf5">A</text>
+        font-size="180" font-weight="800" fill="#c9d6df">A</text>
   <text x="244" y="316" text-anchor="middle"
         font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
-        font-size="180" font-weight="800" fill="#ffffff" opacity="0.07">A</text>
+        font-size="180" font-weight="800" fill="#ffffff" opacity="0.08">A</text>
 
-  <!-- 西里尔 Ж：俄语，紫色，右上角，略小，半透明叠加 -->
+  <!-- 西里尔 Ж：俄语，亮青绿，右上角，略小，半透明叠加 -->
   <text x="332" y="212" text-anchor="middle"
         font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
-        font-size="76" font-weight="700" fill="#bb9af7" opacity="0.92" filter="url(#charGlow)">Ж</text>
+        font-size="76" font-weight="700" fill="#6bc4b5" opacity="0.95" filter="url(#charGlow)">Ж</text>
 
-  <!-- 假名 あ：日语，绿色，右下角，略小，半透明叠加 -->
+  <!-- 假名 あ：日语，亮白绿，右下角，略小，半透明叠加 -->
   <text x="340" y="350" text-anchor="middle"
         font-family="'Noto Sans JP', 'Yu Gothic', 'Meiryo', system-ui, sans-serif"
-        font-size="72" font-weight="600" fill="#9ece6a" opacity="0.92" filter="url(#charGlow)">あ</text>
+        font-size="72" font-weight="600" fill="#9ee0d3" opacity="0.95" filter="url(#charGlow)">あ</text>
 </svg>
