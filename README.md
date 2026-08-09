@@ -85,7 +85,7 @@ word,reading,romaji,meaning,level,category,difficulty
 
 ## License
 
-MIT
+AGPL-3.0-only
 
 ---
 
@@ -176,4 +176,4 @@ word,reading,romaji,meaning,level,category,difficulty
 
 ## License
 
-MIT
+AGPL-3.0-only
