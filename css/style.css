@@ -221,6 +221,15 @@ body {
   color: var(--accent2);
   min-height: 20px;
 }
+#input-notice {
+  text-align: center;
+  font-size: 13px;
+  color: var(--accent2);
+  padding: 8px 16px;
+  margin: 0 auto 4px;
+  max-width: 720px;
+  line-height: 1.5;
+}
 #keyboard {
   display: flex;
   flex-direction: column;
