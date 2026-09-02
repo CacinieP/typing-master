@@ -1,8 +1,10 @@
 const { app, BrowserWindow, nativeImage } = require('electron');
 const path = require('path');
 
-// 应用图标路径：用 PNG（Electron 对 SVG 支持不全，窗口标题栏/dock 都要位图）。
-const iconPath = path.join(__dirname, 'build', 'icon.png');
+// 应用图标：macOS 用带圆角留白的 icon-mac.png（贴合系统 Dock 风格），
+// 其余平台用全出血方形 icon.png。icns 多尺寸图标仅在打包（electron-builder）时使用。
+const iconFile = process.platform === 'darwin' ? 'icon-mac.png' : 'icon.png';
+const iconPath = path.join(__dirname, 'build', iconFile);
 
 function createWindow(appIcon) {
   const win = new BrowserWindow({
