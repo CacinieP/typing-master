@@ -1,6 +1,6 @@
 {
   "name": "typing-master",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "多语言打字练习 - Multi-language typing practice (FR/ES/IT/PT/RU/DE/JA)",
   "main": "main.js",
   "author": "CacinieP",
@@ -47,7 +47,8 @@
             "arm64"
           ]
         }
-      ]
+      ],
+      "icon": "build/icon.icns"
     },
     "nsis": {
       "oneClick": false,

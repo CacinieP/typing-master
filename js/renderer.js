@@ -28,6 +28,8 @@
   let stats = null;
   let precisionTotal = 20;
   let precisionErrors = 0;
+  let misspelledWords = [];
+  let isReviewSession = false;
 
   // DOM
   const $ = id => document.getElementById(id);
@@ -66,6 +68,41 @@
   const langIntroNotice = $('lang-intro-notice');
   const langIntroBody = $('lang-intro-body');
   const langIntroToggle = $('lang-intro-toggle');
+  const btnSound = $('btn-sound');
+  const reviewBadge = $('review-badge');
+  const resultWrong = $('result-wrong');
+  const resultWrongList = $('result-wrong-list');
+  const btnReviewMissed = $('btn-review-missed');
+
+  // 轻量音效：Web Audio 现场合成，无需音频资源；默认关闭，顶栏喇叭按钮切换。
+  const sfx = {
+    ctx: null,
+    enabled: localStorage.getItem('typingmaster_sound') === '1',
+    _beep(freq, duration, type, gain) {
+      if (!this.enabled) return;
+      try {
+        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const t = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const amp = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        amp.gain.setValueAtTime(gain, t);
+        amp.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+        osc.connect(amp);
+        amp.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + duration);
+      } catch (e) { /* 音频设备不可用时静默 */ }
+    },
+    error() { this._beep(160, 0.18, 'square', 0.05); },
+    word() { this._beep(720, 0.09, 'sine', 0.04); },
+    setEnabled(v) {
+      this.enabled = v;
+      localStorage.setItem('typingmaster_sound', v ? '1' : '0');
+    }
+  };
   // 说明卡折叠状态：记忆用户偏好（true=展开, false=收起）
   let langIntroCollapsed = localStorage.getItem('typingmaster_intro_collapsed') === '1';
 
@@ -109,8 +146,64 @@
     $('btn-vocab').addEventListener('click', showVocabPanel);
     $('btn-close-vocab').addEventListener('click', () => $('vocab-panel').classList.add('hidden'));
     $('btn-reset').addEventListener('click', () => {
-      if (confirm('确定重置所有进度？')) {
+      const scope = currentLang
+        ? `确定重置「${langNames[currentLang]}」的练习进度？`
+        : '未选择语言，将重置全部语言的练习进度，确定？';
+      if (confirm(scope)) {
         stats.reset(currentLang);
+        if (!$('stats-panel').classList.contains('hidden')) showStats();
+        toast(currentLang ? '已重置当前语言进度' : '已重置全部进度');
+      }
+    });
+
+    // 音效开关（默认关，状态持久化到 localStorage）
+    updateSoundBtn();
+    btnSound.addEventListener('click', () => {
+      sfx.setEnabled(!sfx.enabled);
+      updateSoundBtn();
+      toast(sfx.enabled ? '音效已开启' : '音效已关闭');
+    });
+
+    // 错词重练：用上一局打错的词开一局新练习
+    btnReviewMissed.addEventListener('click', () => {
+      resultPanel.classList.add('hidden');
+      startGame(misspelledWords);
+    });
+
+    // 打字练习禁用粘贴/拖放
+    typingInput.addEventListener('paste', e => e.preventDefault());
+    typingInput.addEventListener('drop', e => e.preventDefault());
+
+    // 练习中点击输入框以外的区域，把焦点还给输入框
+    gameArea.addEventListener('mousedown', (e) => {
+      if (!gameActive || e.target.closest('input, select, button')) return;
+      e.preventDefault();
+      typingInput.focus();
+    });
+
+    // 全局快捷键：Esc 关弹窗/结束练习，Enter 在结果页或选好语言后开始
+    document.addEventListener('keydown', (e) => {
+      const modalIds = ['stats-panel', 'manual-panel', 'vocab-panel'];
+      const modalOpen = modalIds.some(id => !$(id).classList.contains('hidden'));
+      if (e.key === 'Escape') {
+        if (modalOpen) {
+          modalIds.forEach(id => $(id).classList.add('hidden'));
+        } else if (gameActive) {
+          endGame();
+        }
+        return;
+      }
+      if (e.key !== 'Enter' || gameActive || modalOpen) return;
+      const tag = e.target && e.target.tagName;
+      // 按钮和下拉框自己响应 Enter，这里不拦截以免双重触发
+      if (tag === 'BUTTON' || tag === 'SELECT') return;
+      if (!resultPanel.classList.contains('hidden')) {
+        e.preventDefault();
+        resultPanel.classList.add('hidden');
+        startGame();
+      } else if (currentLang && welcomeEl.classList.contains('hidden') && gameArea.classList.contains('hidden')) {
+        e.preventDefault();
+        startGame();
       }
     });
 
@@ -294,11 +387,19 @@
     return filtered;
   }
 
-  function startGame() {
-    const filtered = getFilteredWords();
-    if (filtered.length === 0) {
-      alert('没有匹配的词汇');
-      return;
+  function startGame(overrideWords) {
+    let filtered;
+    if (Array.isArray(overrideWords) && overrideWords.length > 0) {
+      // 错词重练：直接用传入的词序列，不受分类/难度筛选影响
+      filtered = overrideWords;
+      isReviewSession = true;
+    } else {
+      filtered = getFilteredWords();
+      isReviewSession = false;
+      if (filtered.length === 0) {
+        alert('没有匹配的词汇');
+        return;
+      }
     }
 
     words = shuffle([...filtered]);
@@ -308,6 +409,7 @@
     charErrors = {};
     categoryStats = {};
     precisionErrors = 0;
+    misspelledWords = [];
     gameActive = true;
     startTime = null;
 
@@ -320,6 +422,7 @@
     liveStats.classList.remove('hidden');
     resultPanel.classList.add('hidden');
     welcomeEl.classList.add('hidden');
+    reviewBadge.classList.toggle('hidden', !isReviewSession);
 
     updateLiveStats();
     showCurrentWord();
@@ -329,6 +432,8 @@
 
     if (timerInterval) clearInterval(timerInterval);
     if (gameMode === 'timed') {
+      // 限时挑战从点击「开始」就倒计时；此前要等第一次击键才走表，界面看起来像卡住
+      startTime = Date.now();
       statTimer.textContent = timeLimit + 's';
       timerInterval = setInterval(tick, 1000);
     } else {
@@ -423,6 +528,7 @@
       } else {
         targetChars[pos].classList.add('incorrect');
         kb.showWrong(typed);
+        sfx.error();
         typingInput.classList.add('shake');
         setTimeout(() => typingInput.classList.remove('shake'), 300);
 
@@ -446,9 +552,11 @@
 
       if (wordErrors === 0) {
         correctCount++;
+        sfx.word();
       } else {
         wrongCount++;
         precisionErrors += wordErrors;
+        misspelledWords.push(words[wordIndex]);
       }
 
       const cat = words[wordIndex].category;
@@ -534,6 +642,7 @@
     gameArea.classList.add('hidden');
     liveStats.classList.add('hidden');
     resultPanel.classList.remove('hidden');
+    resultPanel.querySelector('h2').textContent = isReviewSession ? '错词重练完成！' : '练习完成！';
 
     $('result-stats').innerHTML = `
       <div class="result-stat"><div class="rs-label">速度</div><div class="rs-value">${wpm} WPM</div></div>
@@ -544,6 +653,18 @@
       <div class="result-stat"><div class="rs-label">词汇</div><div class="rs-value">${wordIndex}</div></div>
       ${gameMode === 'precision' ? `<div class="result-stat"><div class="rs-label">错误字符</div><div class="rs-value" style="color:var(--red)">${precisionErrors}</div></div>` : ''}
     `;
+
+    // 错词回顾 + 重练入口（本局全对则隐藏）
+    const hasMissed = misspelledWords.length > 0;
+    resultWrong.classList.toggle('hidden', !hasMissed);
+    btnReviewMissed.classList.toggle('hidden', !hasMissed);
+    if (hasMissed) {
+      btnReviewMissed.textContent = `重练错词 (${misspelledWords.length})`;
+      resultWrongList.innerHTML = misspelledWords.map(w => {
+        const label = currentLang === 'ja' ? `${w.word}（${w.reading}）` : w.word;
+        return `<span class="wrong-chip"><b>${escapeHtml(label)}</b><i>${escapeHtml(w.meaning)}</i></span>`;
+      }).join('');
+    }
   }
 
   function goHome() {
@@ -552,7 +673,31 @@
     gameArea.classList.add('hidden');
     liveStats.classList.add('hidden');
     resultPanel.classList.add('hidden');
+    reviewBadge.classList.add('hidden');
     welcomeEl.classList.remove('hidden');
+  }
+
+  function updateSoundBtn() {
+    btnSound.textContent = sfx.enabled ? '🔊' : '🔇';
+    btnSound.title = sfx.enabled ? '音效：开（点击关闭）' : '音效：关（点击开启）';
+  }
+
+  let toastTimer = null;
+  function toast(msg) {
+    let el = $('toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'toast';
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
   function showStats() {

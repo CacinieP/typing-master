@@ -29,12 +29,15 @@ Requires Node.js 18+.
 
 - **7 languages**: French / Spanish / Italian / Portuguese / Russian / German / Japanese
 - **3 modes**: Free practice, timed challenge, precision mode
+- **Mistake review**: one-click re-drill of the words you missed, with a wrong-word recap on the result screen
 - **Virtual keyboard**: Real-time display of the current key to press
 - **Keyboard layouts**: US International, Russian ЙЦУКЕН, Japanese JIS kana layout
 - **Japanese dual mode**: Romaji input / direct kana input
 - **Difficulty levels**: European languages A1–C1 / Japanese JLPT N5–N1
 - **Vocabulary management**: Download templates, import custom vocabulary, export current vocabulary
-- **Practice statistics**: WPM, accuracy, category accuracy, error-prone character analysis
+- **Practice statistics**: WPM, accuracy, WPM trend chart, category accuracy, error-prone character analysis
+- **Sound feedback (optional)**: subtle error / word-complete tones, toggle in the title bar
+- **Keyboard shortcuts**: Enter to start / retry, Esc to quit a session or close panels
 
 ## Use Cases
 
@@ -120,12 +123,15 @@ npm start
 
 - **7 种语言**：法语 / 西班牙语 / 意大利语 / 葡萄牙语 / 俄语 / 德语 / 日语
 - **3 种模式**：自由练习、限时挑战、精确模式
+- **错词重练**：结果页一键重练打错的词，附错词回顾
 - **虚拟键盘**：实时显示当前需要按的键位
 - **键盘布局**：US International、俄语 ЙЦУКЕН、日语 JIS 假名布局
 - **日语双模式**：罗马字输入 / 假名直接输入
 - **难度分级**：欧洲语言 A1-C1 / 日语 JLPT N5-N1
 - **词汇管理**：下载模板、导入自定义词汇、导出当前词汇
-- **练习统计**：WPM、准确率、分类正确率、易错字符分析
+- **练习统计**：WPM、准确率、WPM 趋势图、分类正确率、易错字符分析
+- **音效反馈（可选）**：错误 / 完词提示音，顶栏一键开关
+- **键盘快捷键**：Enter 开始 / 重练，Esc 结束练习或关闭弹窗
 
 ## Use Cases
 
