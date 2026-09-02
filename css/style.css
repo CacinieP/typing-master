@@ -805,6 +805,116 @@ body.lang-ja #target-word { font-size: 28px; }
   75% { transform: translateX(8px); }
 }
 
+/* === v1.4.0: 错词重练 / 音效 / WPM 趋势图 / toast === */
+#btn-review-missed {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: linear-gradient(180deg, #f0c264 0%, var(--accent2) 55%, #b8841f 100%);
+  color: #1d1503;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 10px rgba(232, 169, 60, 0.35);
+}
+#btn-review-missed:hover { filter: brightness(1.1); }
+#btn-review-missed:active { transform: translateY(1px); }
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+}
+.result-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+#result-wrong { width: 100%; max-width: 660px; }
+#result-wrong h3 {
+  text-align: center;
+  font-size: 15px;
+  color: var(--red);
+  margin-bottom: 10px;
+}
+#result-wrong-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-height: 140px;
+  overflow-y: auto;
+  padding: 2px;
+}
+.wrong-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--bg3) 0%, #15252a 100%);
+  box-shadow: var(--hi-edge);
+}
+.wrong-chip b {
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: var(--red);
+  font-size: 14px;
+}
+.wrong-chip i {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+#review-badge {
+  padding: 4px 16px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--accent2);
+  border: 1px solid var(--accent2);
+  border-radius: 999px;
+  background: rgba(232, 169, 60, 0.12);
+}
+
+.sparkline {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--hi-edge);
+}
+.spark-caption {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(16px);
+  padding: 10px 22px;
+  background: linear-gradient(180deg, #1f2d33 0%, var(--bg3) 100%);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 300;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), var(--accent-glow);
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }

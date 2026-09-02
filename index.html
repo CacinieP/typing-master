@@ -19,6 +19,7 @@
       <button class="lang-btn" data-lang="ja">日本語 日语</button>
     </div>
     <div class="nav-right">
+      <button id="btn-sound" title="音效：关（点击开启）">🔇</button>
       <button id="btn-manual" title="手册">?</button>
       <button id="btn-stats" title="统计">📊</button>
       <button id="btn-vocab" title="词汇管理">📚</button>
@@ -89,6 +90,7 @@
   <div id="game-area" class="hidden">
     <!-- 待打文本 -->
     <div id="text-panel">
+      <div id="review-badge" class="hidden">错词重练</div>
       <div id="word-display">
         <div id="kanji-display"></div>
         <div id="furigana-display"></div>
@@ -170,8 +172,16 @@
   <div id="result-panel" class="hidden">
     <h2>练习完成！</h2>
     <div id="result-stats"></div>
-    <button id="btn-retry">重新练习</button>
-    <button id="btn-home">返回首页</button>
+    <div id="result-wrong" class="hidden">
+      <h3>错词回顾</h3>
+      <div id="result-wrong-list"></div>
+    </div>
+    <div class="result-actions">
+      <button id="btn-review-missed" class="hidden">重练错词</button>
+      <button id="btn-retry">重新练习</button>
+      <button id="btn-home">返回首页</button>
+    </div>
+    <p class="result-hint">Enter = 重新练习 · Esc = 提前结束</p>
   </div>
 
   <!-- 统计面板 -->
