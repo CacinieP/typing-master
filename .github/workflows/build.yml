@@ -67,7 +67,7 @@ jobs:
           fi
 
       - name: Build Electron app (macOS)
-        if: matrix.platform == 'mac'
+        if: matrix.platform == 'mac' && github.event_name != 'pull_request'
         run: npm run build:mac
         env:
           # 公证（全部存在时才公证；任一缺失则只签名不公证 —— notarize.js 内部判断）
