@@ -2,6 +2,10 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
+  <!-- CSP（issue #12）：应用只加载本地资源；script 无内联（词库自带 var WORD_DATA 守卫），
+       style 需 'unsafe-inline'（大量内联 style 属性）；img 预留 data: -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
   <title>Typing Master - 多语言打字练习</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -250,13 +254,30 @@
           <button id="btn-vocab-export">导出 CSV</button>
         </div>
       </div>
+      <div class="vocab-section">
+        <h3>恢复内置词库</h3>
+        <p>导入会整体替换该语言词汇。若想回到出厂词库，选择语言后点击恢复（当前自定义词汇将被清除）。</p>
+        <div class="vocab-import-row">
+          <select id="vocab-restore-lang">
+            <option value="fr">🇫🇷 法语</option>
+            <option value="es">🇪🇸 西班牙语</option>
+            <option value="it">🇮🇹 意大利语</option>
+            <option value="pt">🇵🇹 葡萄牙语</option>
+            <option value="ru">🇷🇺 俄语</option>
+            <option value="de">🇩🇪 德语</option>
+            <option value="ja">🇯🇵 日语</option>
+          </select>
+          <button id="btn-vocab-restore">恢复内置词库</button>
+        </div>
+        <div id="vocab-restore-status"></div>
+      </div>
     </div>
     <button id="btn-close-vocab">关闭</button>
   </div>
 
   <script src="js/keyboard.js"></script>
   <script src="js/stats.js"></script>
-  <script>var WORD_DATA = WORD_DATA || {};</script>
+  <script src="js/csv.js"></script>
   <script src="js/vocab-templates.js"></script>
   <script src="words/fr.js"></script>
   <script src="words/es.js"></script>
