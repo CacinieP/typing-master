@@ -85,20 +85,32 @@ jobs:
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
-      - name: Staple notarized DMGs
+      - name: Notarize and staple DMGs
         if: matrix.platform == 'mac' && github.event_name != 'pull_request'
-        # app 内的 staple 由 @electron/notarize 自动完成；DMG 容器需要单独 staple（issue #9）。
-        # 凭证缺失（未公证）时 stapler 会失败 —— 容错跳过，不阻塞构建。
+        # app 内的 staple 由 @electron/notarize 自动完成（afterSign）。
+        # DMG 是公证之后才打包的文件，Apple 服务器没有它的提交记录，
+        # stapler 直接 staple 会 "Record not found" —— 必须先用 notarytool
+        # 提交 DMG 本身公证，再 stapler 补票据（issue #9）。
+        # 凭证缺失时跳过，不阻塞构建。
         run: |
           shopt -s nullglob
           for f in dist/*.dmg; do
-            if xcrun stapler staple "$f"; then
-              echo "::notice::stapled $f"
-              xcrun stapler validate "$f" || true
+            if xcrun notarytool submit "$f" \
+                 --apple-id "$APPLE_ID" \
+                 --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+                 --team-id "$APPLE_TEAM_ID" \
+                 --wait; then
+              xcrun stapler staple "$f"
+              xcrun stapler validate "$f"
+              echo "::notice::notarized + stapled $f"
             else
-              echo "::warning::staple 跳过（$f 未公证或凭证缺失）"
+              echo "::warning::DMG 公证跳过（$f —— 凭证缺失或提交失败）"
             fi
           done
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
