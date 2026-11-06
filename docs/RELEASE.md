@@ -102,3 +102,4 @@ Get-AuthenticodeSignature ".\Typing.Master.Setup.1.x.0.exe"
 |---|---|---|
 | 2026-11-06 | v1.4.0 | macOS 双 arch：Developer ID（Yichun Deng, 5CFSU44B7Q）+ 公证 + app staple ✅；DMG 容器无 staple；exe 未签名；CI 双重公证证实（run 33694574749） |
 | 2026-11-06 | 本地构建（fix/ci-deps） | electron 43.8.7 + builder 26.18.0：双 arch dmg + win NSIS 交叉构建均成功；notarize:false 生效（单公证）；asar 资源完整 |
+| 2026-11-06 | **v1.5.0** | 双 arch：Developer ID + 公证 + app staple ✅；**DMG 容器 staple ✅**（notarytool submit + stapler，PR #19；首版实现 stapler-only 因 DMG 无公证记录失败，见 run 42192677664）；exe 未签名（#9 继续跟踪，需证书）；构建总耗时约 11 分钟（单次公证生效） |
