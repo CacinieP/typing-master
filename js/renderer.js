@@ -23,6 +23,7 @@
   let timerInterval = null;
   let timeLimit = 60;
   let charErrors = {};
+  let charTotals = {};
   let categoryStats = {};
   let kb = null;
   let stats = null;
@@ -30,6 +31,7 @@
   let precisionErrors = 0;
   let misspelledWords = [];
   let isReviewSession = false;
+  let wordTimer = null; // showCurrentWord 的 150ms 延迟定时器（endGame/startGame 时清理，防止竞态）
 
   // DOM
   const $ = id => document.getElementById(id);
@@ -407,6 +409,7 @@
     correctCount = 0;
     wrongCount = 0;
     charErrors = {};
+    charTotals = {};
     categoryStats = {};
     precisionErrors = 0;
     misspelledWords = [];
@@ -431,6 +434,7 @@
     kb.clearHighlights();
 
     if (timerInterval) clearInterval(timerInterval);
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
     if (gameMode === 'timed') {
       // 限时挑战从点击「开始」就倒计时；此前要等第一次击键才走表，界面看起来像卡住
       startTime = Date.now();
@@ -496,6 +500,11 @@
 
     const chars = targetWord.querySelectorAll('.char');
     const target = getTypingTarget(w);
+    // 统计本词每个字符的要求输入次数（错误率分母，issue #4）：
+    // 只有这里知道「字符总共被要求打了多少次」，出错分支只知道错误次数。
+    for (const ch of target) {
+      charTotals[ch] = (charTotals[ch] || 0) + 1;
+    }
     if (chars.length > 0) {
       chars[0].classList.remove('pending');
       chars[0].classList.add('current');
@@ -520,6 +529,14 @@
       const expected = target[pos];
       const typed = val[pos];
 
+      // 死键中间态（issue #3）：US International 布局下死键先以自身字符落入输入框
+      // （如 café 打到 caf 后按 '，value="caf'"）。此时不计错、不推进高亮、不结算，
+      // 等下一个组合键产生真正的字符（é）后由后续 input 事件处理。
+      if (isDeadKeyCombo(typed, expected)) {
+        kb.highlightKey(expected); // 保持提示：显示死键 + 目标键
+        return;
+      }
+
       targetChars[pos].classList.remove('current', 'pending');
 
       if (typed === expected) {
@@ -532,9 +549,9 @@
         typingInput.classList.add('shake');
         setTimeout(() => typingInput.classList.remove('shake'), 300);
 
-        if (!charErrors[expected]) charErrors[expected] = { total: 0, errors: 0 };
-        charErrors[expected].total++;
-        charErrors[expected].errors++;
+        // 只记错误次数；分母（该字符被要求的总次数）由 showCurrentWord 计入 charTotals。
+        // 旧版在这里同时累加 total，导致错误率恒为 100%（issue #4）。
+        charErrors[expected] = (charErrors[expected] || 0) + 1;
       }
 
       if (pos + 1 < target.length) {
@@ -576,7 +593,11 @@
         return;
       }
 
-      setTimeout(() => showCurrentWord(), 150);
+      // 150ms 后切下一词；期间用户可能 Esc 结束/回首页，回调里先核对状态（issue #4 竞态）
+      wordTimer = setTimeout(() => {
+        wordTimer = null;
+        if (gameActive) showCurrentWord();
+      }, 150);
     }
   }
 
@@ -622,22 +643,27 @@
   function endGame() {
     gameActive = false;
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
 
     const elapsed = startTime ? (Date.now() - startTime) / 60000 : 0;
     const wpm = elapsed > 0 ? Math.round(correctCount / elapsed) : 0;
     const total = correctCount + wrongCount;
     const accuracy = total > 0 ? Math.round(correctCount / total * 100) : 100;
 
-    stats.record(currentLang, {
-      wpm, accuracy,
-      correct: correctCount,
-      wrong: wrongCount,
-      mode: gameMode,
-      timeLimit: gameMode === 'timed' ? timeLimit : null,
-      duration: Math.round(elapsed * 60),
-      charErrors,
-      categoryStats
-    });
+    // 没打出任何词（如刚开始就 Esc）不入库，避免 0 词会话拉低平均值（issue #4）
+    if (total > 0) {
+      stats.record(currentLang, {
+        wpm, accuracy,
+        correct: correctCount,
+        wrong: wrongCount,
+        mode: gameMode,
+        timeLimit: gameMode === 'timed' ? timeLimit : null,
+        duration: Math.round(elapsed * 60),
+        charErrors,
+        charTotals,
+        categoryStats
+      });
+    }
 
     gameArea.classList.add('hidden');
     liveStats.classList.add('hidden');
@@ -670,6 +696,7 @@
   function goHome() {
     gameActive = false;
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (wordTimer) { clearTimeout(wordTimer); wordTimer = null; }
     gameArea.classList.add('hidden');
     liveStats.classList.add('hidden');
     resultPanel.classList.add('hidden');
