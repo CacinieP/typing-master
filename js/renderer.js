@@ -220,6 +220,21 @@
     typingInput.addEventListener('keydown', onKeyDown);
   }
 
+  // 分类下拉填充：DOM 构建 + textContent（分类 key/label 可能来自导入的 CSV，不可信，issue #7）
+  function setCategoryOptions(categories) {
+    categorySelect.innerHTML = '';
+    const allOpt = document.createElement('option');
+    allOpt.value = 'all';
+    allOpt.textContent = '全部';
+    categorySelect.appendChild(allOpt);
+    for (const [key, label] of Object.entries(categories || {})) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = label;
+      categorySelect.appendChild(opt);
+    }
+  }
+
   function selectLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
@@ -230,11 +245,7 @@
       return;
     }
 
-    // Populate categories
-    categorySelect.innerHTML = '<option value="all">全部</option>';
-    for (const [key, label] of Object.entries(data.categories)) {
-      categorySelect.innerHTML += `<option value="${key}">${label}</option>`;
-    }
+    setCategoryOptions(data.categories);
 
     // Difficulty labels
     updateDifficultyLabels();
@@ -470,11 +481,7 @@
       wordPhonetic.textContent = w.level;
 
       const target = getTypingTarget(w);
-      let html = '';
-      for (const ch of target) {
-        html += `<span class="char pending">${ch}</span>`;
-      }
-      targetWord.innerHTML = html;
+      renderTargetChars(target);
       // 不设 maxLength：日语假名输入法可能产生多码组合，
       // 且 romaji 里促音/拨音/长音的按键数与目标字符数不一致。
     } else {
@@ -486,11 +493,7 @@
       wordMeaning.textContent = w.meaning;
       wordPhonetic.textContent = w.phonetic;
 
-      let html = '';
-      for (const ch of w.word) {
-        html += `<span class="char pending">${ch}</span>`;
-      }
-      targetWord.innerHTML = html;
+      renderTargetChars(w.word);
       // 不设 maxLength：欧语重音字符用 US International 死键输入时，
       // 死键中间态（如 café 的 caf'）会先占满长度，导致最后的字母无法输入。
     }
@@ -505,6 +508,20 @@
       chars[0].classList.add('current');
       kb.highlightKey(target[0]);
     }
+  }
+
+  // 目标词逐字符渲染：DOM 构建 + textContent（词内容可能来自导入 CSV，不可信，issue #7）。
+  // 每字符一个 span.char，供 onInput 按 pos 更新高亮。
+  function renderTargetChars(str) {
+    targetWord.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    for (const ch of str) {
+      const span = document.createElement('span');
+      span.className = 'char pending';
+      span.textContent = ch;
+      frag.appendChild(span);
+    }
+    targetWord.appendChild(frag);
   }
 
   function onInput(e) {
@@ -723,10 +740,6 @@
     el.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
-  }
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
   function showStats() {
@@ -993,19 +1006,17 @@
 
   // --- Vocabulary management ---
 
-  const CSV_HEADERS = {
-    european: 'word,meaning,phonetic,category,difficulty',
-    japanese: 'word,reading,romaji,meaning,level,category,difficulty'
-  };
+  const CSV_HEADERS = window.CsvUtils.HEADERS;
+  const escapeCSV = window.CsvUtils.escapeCSV;
+  const escapeHtml = window.CsvUtils.escapeHtml;
 
   const LANG_TYPE = { fr: 'european', es: 'european', it: 'european', pt: 'european', ru: 'european', de: 'european', ja: 'japanese' };
 
-  function escapeCSV(val) {
-    const s = String(val == null ? '' : val);
-    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
-      return '"' + s.replace(/"/g, '""') + '"';
-    }
-    return s;
+  // 内置词库快照（issue #11）：loadCustomVocab 可能用 localStorage 的导入词库覆盖
+  // WORD_DATA[lang]，这里先留住内置引用，「恢复内置词库」直接拷回，无需重启。
+  const BUILTIN_WORD_DATA = {};
+  for (const lang of ['fr', 'es', 'it', 'pt', 'ru', 'de', 'ja']) {
+    BUILTIN_WORD_DATA[lang] = WORD_DATA[lang];
   }
 
   function downloadFile(filename, content) {
@@ -1044,112 +1055,15 @@
     downloadFile((names[lang] || lang) + '_vocabulary.csv', csv);
   }
 
-  function parseCSV(text) {
-    const lines = text.trim().split(/\r?\n/);
-    if (lines.length < 2) return { error: '文件为空或格式不正确（至少需要标题行+数据行）' };
-
-    // Skip BOM
-    if (lines[0].charCodeAt(0) === 0xFEFF) lines[0] = lines[0].substring(1);
-
-    const header = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-    const required = {
-      european: ['word', 'meaning', 'category', 'difficulty'],
-      japanese: ['word', 'reading', 'romaji', 'meaning', 'category', 'difficulty']
-    };
-
-    const isJapanese = header.includes('reading') && header.includes('romaji');
-    const type = isJapanese ? 'japanese' : 'european';
-    const missing = required[type].filter(f => !header.includes(f));
-    if (missing.length > 0) {
-      return { error: '缺少必要列: ' + missing.join(', ') + '。需要的列: ' + CSV_HEADERS[type] };
-    }
-
-    const words = [];
-    const categories = {};
-    const errors = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-      const fields = parseCSVLine(line);
-      const row = {};
-      header.forEach((h, idx) => { row[h] = (fields[idx] || '').trim(); });
-
-      if (!row.word) { errors.push('第' + (i + 1) + '行: word 为空，已跳过'); continue; }
-      if (!row.meaning) { errors.push('第' + (i + 1) + '行: meaning 为空，已跳过'); continue; }
-
-      const diff = parseInt(row.difficulty);
-      if (isNaN(diff) || diff < 1 || diff > 5) { errors.push('第' + (i + 1) + '行: difficulty 应为1-5，已设为1'); }
-
-      if (type === 'japanese') {
-        const w = {
-          word: row.word,
-          reading: row.reading || '',
-          romaji: row.romaji || '',
-          meaning: row.meaning,
-          level: row.level || 'N5',
-          category: row.category || 'custom',
-          difficulty: isNaN(diff) ? 1 : Math.max(1, Math.min(5, diff))
-        };
-        words.push(w);
-        categories[w.category] = w.category;
-      } else {
-        const w = {
-          word: row.word,
-          meaning: row.meaning,
-          phonetic: row.phonetic || '',
-          category: row.category || 'custom',
-          difficulty: isNaN(diff) ? 1 : Math.max(1, Math.min(5, diff))
-        };
-        words.push(w);
-        categories[w.category] = w.category;
-      }
-    }
-
-    if (words.length === 0) {
-      return { error: '没有解析到有效词汇' };
-    }
-
-    return { words, categories, errors, type };
-  }
-
-  function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (inQuotes) {
-        if (ch === '"') {
-          if (i + 1 < line.length && line[i + 1] === '"') {
-            current += '"';
-            i++;
-          } else {
-            inQuotes = false;
-          }
-        } else {
-          current += ch;
-        }
-      } else {
-        if (ch === '"') {
-          inQuotes = true;
-        } else if (ch === ',') {
-          result.push(current);
-          current = '';
-        } else {
-          current += ch;
-        }
-      }
-    }
-    result.push(current);
-    return result;
-  }
+  // parseCSV / parseCSVLine 已移至 js/csv.js（window.CsvUtils），node 可直接测试（issue #7）
 
   function showVocabPanel() {
     const panel = $('vocab-panel');
     panel.classList.remove('hidden');
     $('vocab-import-status').textContent = '';
     $('vocab-import-status').className = '';
+    $('vocab-restore-status').textContent = '';
+    $('vocab-restore-status').className = '';
     $('vocab-file-label').textContent = '选择文件...';
     $('vocab-file-input').value = '';
   }
@@ -1172,6 +1086,22 @@
       }
     });
 
+    // 恢复内置词库（issue #11）：清除该语言的 localStorage 覆盖并拷回内置快照
+    $('btn-vocab-restore').addEventListener('click', () => {
+      const lang = $('vocab-restore-lang').value;
+      const names = { fr: '法语', es: '西班牙语', it: '意大利语', pt: '葡萄牙语', ru: '俄语', de: '德语', ja: '日语' };
+      if (!confirm(`确定恢复「${names[lang]}」的内置词库？当前自定义词汇将被清除。`)) return;
+      try {
+        localStorage.removeItem('typingmaster_custom_' + lang);
+      } catch (err) { /* ignore */ }
+      WORD_DATA[lang] = BUILTIN_WORD_DATA[lang];
+      if (currentLang === lang) setCategoryOptions(WORD_DATA[lang].categories);
+      const statusEl = $('vocab-restore-status');
+      statusEl.textContent = `已恢复「${names[lang]}」内置词库（${WORD_DATA[lang].words.length} 词）。`;
+      statusEl.className = 'success';
+      toast(`已恢复「${names[lang]}」内置词库`);
+    });
+
     // Import button
     $('btn-vocab-import').addEventListener('click', () => {
       const fileInput = $('vocab-file-input');
@@ -1183,6 +1113,10 @@
       }
 
       const lang = $('vocab-import-lang').value;
+      const names = { fr: '法语', es: '西班牙语', it: '意大利语', pt: '葡萄牙语', ru: '俄语', de: '德语', ja: '日语' };
+      // 导入会整体替换该语言词汇（含内置），明确告知不可逆（issue #11）
+      if (!confirm(`导入将整体替换「${names[lang]}」当前的全部词汇（含内置词库），且原词库不会自动保留。\n建议先在下方「导出当前词汇」备份。确定继续？`)) return;
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = parseCSV(e.target.result);
@@ -1201,25 +1135,30 @@
           WORD_DATA[lang] = { categories: result.categories, words: result.words };
         }
 
-        // Save to localStorage for persistence
+        // Save to localStorage for persistence；配额溢出不再静默（issue #11）
+        let persisted = true;
         try {
           localStorage.setItem('typingmaster_custom_' + lang, JSON.stringify(WORD_DATA[lang]));
-        } catch (err) { /* ignore */ }
+        } catch (err) {
+          persisted = false;
+        }
 
         let msg = '导入成功！共 ' + result.words.length + ' 个词汇';
+        statusEl.className = 'success';
+        if (!persisted) {
+          msg += '。注意：词库较大未能保存到本地存储，仅本次运行有效';
+          statusEl.className = 'error';
+        }
         if (result.errors.length > 0) {
-          msg += '（' + result.errors.length + ' 条警告）';
+          // 展示具体错误明细（最多 5 条），便于自查 CSV（issue #7/#11）
+          const shown = result.errors.slice(0, 5).join('；');
+          msg += '\n' + result.errors.length + ' 条警告：' + shown + (result.errors.length > 5 ? ' …' : '');
         }
         statusEl.textContent = msg;
-        statusEl.className = 'success';
 
         // Refresh category selector if current lang matches
         if (currentLang === lang) {
-          const data2 = WORD_DATA[lang];
-          categorySelect.innerHTML = '<option value="all">全部</option>';
-          for (const [key, label] of Object.entries(data2.categories)) {
-            categorySelect.innerHTML += '<option value="' + key + '">' + label + '</option>';
-          }
+          setCategoryOptions(WORD_DATA[lang].categories);
         }
       };
       reader.readAsText(fileInput.files[0], 'UTF-8');

@@ -1,5 +1,10 @@
 // stats.js - Statistics tracking with localStorage
 
+// 转义用于 innerHTML 的动态值（分类标签/字符可能来自导入词库，issue #7）
+function escapeHtmlStat(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 class StatsManager {
   constructor() {
     this.storageKey = 'typing-game-stats';
@@ -137,7 +142,7 @@ class StatsManager {
         const pct = Math.round(s.correct / s.total * 100);
         const color = pct >= 80 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
         html += `<div class="stats-bar">
-          <span class="sb-label">${catLabels[cat] || cat}</span>
+          <span class="sb-label">${escapeHtmlStat(catLabels[cat] || cat)}</span>
           <div class="sb-track"><div class="sb-fill" style="width:${pct}%;background:${color}"></div></div>
           <span class="sb-value" style="color:${color}">${pct}%</span>
         </div>`;
@@ -153,7 +158,7 @@ class StatsManager {
         const pct = Math.round(cs.errorRate * 100);
         const color = pct > 30 ? 'var(--red)' : pct > 15 ? 'var(--orange)' : 'var(--yellow)';
         html += `<div class="stats-bar">
-          <span class="sb-label" style="font-family:Consolas;font-size:16px">${cs.char}</span>
+          <span class="sb-label" style="font-family:Consolas;font-size:16px">${escapeHtmlStat(cs.char)}</span>
           <div class="sb-track"><div class="sb-fill" style="width:${pct}%;background:${color}"></div></div>
           <span class="sb-value" style="color:${color}">${pct}%</span>
         </div>`;

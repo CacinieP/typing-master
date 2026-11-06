@@ -80,5 +80,49 @@ assert(ß2.total === 13 && ß2.errors === 8, `旧+新累计：total=13 errors=8�
 sm.record('es', { wpm: 0, accuracy: 100, correct: 0, wrong: 0, mode: 'practice', charErrors: {}, charTotals: {}, categoryStats: {} });
 assert(sm.getStats('es') !== null, '空错误表 record 不抛错');
 
+// ---------- 3) CsvUtils：解析/转义/公式注入防护（issue #7） ----------
+console.log('== CsvUtils (issue #7) ==');
+const csv = new Function(
+  fs.readFileSync(path.join(root, 'js/csv.js'), 'utf8') + '; return globalThis.CsvUtils;'
+)();
+
+// 引号字段内换行（旧版按行 split 会解析错位）
+const multiline = 'word,meaning,category,difficulty\n' +
+  'linea,"第一行\n第二行",test,1\n' +
+  'fin,"结尾",test,2\n';
+const r1 = csv.parseCSV(multiline);
+assert(r1.words && r1.words.length === 2, '引号内换行：两条记录都被识别');
+assert(r1.words[0].meaning === '第一行\n第二行', '引号内换行内容完整保留');
+
+// 双引号转义
+const r2 = csv.parseCSV('word,meaning,category,difficulty\n"a""b",含义,test,3\n');
+assert(r2.words[0].word === 'a"b', '双引号转义 "" → "');
+
+// BOM 剥离
+const r3 = csv.parseCSV('\uFEFFword,meaning,category,difficulty\nbonjour,你好,salutations,1\n');
+assert(r3.words && r3.words[0].word === 'bonjour', 'UTF-8 BOM 自动剥离');
+
+// 空行跳过 + \r\n
+const r4 = csv.parseCSV('word,meaning,category,difficulty\r\nun,一,nombres,1\r\n\r\ndeux,二,nombres,1\r\n');
+assert(r4.words.length === 2, '\\r\\n + 空行：两条记录');
+
+// 错误收集：缺 meaning 的行被跳过并报告行号
+const r5 = csv.parseCSV('word,meaning,category,difficulty\nw1,,test,1\nw2,含义,test,1\n');
+assert(r5.words.length === 1 && r5.words[0].word === 'w2', '缺 meaning 的行跳过');
+assert(r5.errors.some(e => e.includes('第2行')), '错误信息带原始行号');
+
+// escapeCSV 公式注入防护
+assert(csv.escapeCSV('=HYPERLINK(1)') === "'=HYPERLINK(1)", '= 开头前置单引号');
+assert(csv.escapeCSV('+1+1') === "'+1+1", '+ 开头前置单引号');
+assert(csv.escapeCSV('-1') === "'-1", '- 开头前置单引号');
+assert(csv.escapeCSV('@cmd') === "'@cmd", '@ 开头前置单引号');
+assert(csv.escapeCSV('café') === 'café', '普通词不受影响');
+assert(csv.escapeCSV('a,b') === '"a,b"', '逗号照旧加引号');
+assert(csv.escapeCSV('a"b') === '"a""b"', '引号照旧转义');
+
+// escapeHtml
+assert(csv.escapeHtml('<img src=x onerror=1>') === '&lt;img src=x onerror=1&gt;', '尖括号转义');
+assert(csv.escapeHtml('a&"\'') === 'a&amp;&quot;&#39;', '& " \' 转义');
+
 console.log(failures === 0 ? '\nALL TESTS PASSED' : `\n${failures} TEST(S) FAILED`);
 process.exit(failures === 0 ? 0 : 1);
