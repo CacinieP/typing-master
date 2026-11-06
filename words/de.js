@@ -218,7 +218,6 @@ WORD_DATA['de'] = {
     {word:'Vertrauen',meaning:'信任',phonetic:'/fɛɐ̯ˈtʁaʊ̯ən/',category:'gefuehle',difficulty:5},
     {word:'Neugier',meaning:'好奇',phonetic:'/ˈnɔɪ̯ɡiːɐ̯/',category:'gefuehle',difficulty:5},
     {word:'groß',meaning:'大的',phonetic:'/ɡʁoːs/',category:'gefuehle',difficulty:1},
-    {word:'schön',meaning:'美丽的',phonetic:'/ʃøːn/',category:'gefuehle',difficulty:2},
     {word:'grüßen',meaning:'问候/致敬',phonetic:'/ˈɡʁyːsn̩/',category:'gefuehle',difficulty:4}
   ]
 };

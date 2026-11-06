@@ -2,9 +2,9 @@ word,meaning,phonetic,category,difficulty
 olá,你好,/ɔˈla/,saudacoes,1
 obrigado,谢谢,/obɾiˈɡadu/,saudacoes,1
 bom dia,早上好,/bõ ˈdia/,saudacoes,1
-feijoada,黑豆炖肉,/fejˈʒwada/,nourriture,2
-pão,面包,/pɐ̃w̃/,nourriture,1
-bacalhau,鳕鱼,/bakaˈʎaw/,nourriture,2
+feijoada,黑豆炖肉,/fej.ʒuˈa.dɐ/,comida,2
+pão,面包,/pɐ̃w̃/,comida,1
+bacalhau,鳕鱼,/bakaˈʎaw/,comida,2
 viagem,旅行,/viˈaʒẽj/,viagem,2
 avião,飞机,/aviˈɐ̃w̃/,viagem,2
 comboio,火车,/kõˈboju/,viagem,2
@@ -17,11 +17,11 @@ vermelho,红色,/veɾˈmeʎu/,cores,1
 azul,蓝色,/aˈzul/,cores,1
 cabeça,头,/kaˈbesa/,corpo,1
 mão,手,/mɐ̃w̃/,corpo,1
-sol,太阳,/sɔl/,tempo,1
-chuva,雨,/ˈʃuva/,tempo,1
-casa,家,/ˈkaza/,diario,1
+sol,太阳,/sɔl/,clima,1
+chuva,雨,/ˈʃuvɐ/,clima,1
+casa,家,/ˈkazɐ/,diario,1
 trabalho,工作,/tɾaˈbaʎu/,diario,2
 feliz,幸福的,/fɛˈliʃ/,emocoes,2
 triste,悲伤的,/ˈtɾiʃtɛ/,emocoes,2
-biblioteca,图书馆,/biliuˈtɛka/,diario,2
-desenvolvimento,发展,/dezevolveˈmẽtu/,emocoes,4
+biblioteca,图书馆,/bi.bli.uˈtɛ.kɐ/,diario,2
+desenvolvimento,发展,/de.ʒɨ.vɔl.viˈmẽ.tu/,emocoes,4
