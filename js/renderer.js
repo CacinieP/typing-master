@@ -500,11 +500,6 @@
 
     const chars = targetWord.querySelectorAll('.char');
     const target = getTypingTarget(w);
-    // 统计本词每个字符的要求输入次数（错误率分母，issue #4）：
-    // 只有这里知道「字符总共被要求打了多少次」，出错分支只知道错误次数。
-    for (const ch of target) {
-      charTotals[ch] = (charTotals[ch] || 0) + 1;
-    }
     if (chars.length > 0) {
       chars[0].classList.remove('pending');
       chars[0].classList.add('current');
@@ -565,6 +560,13 @@
       let wordErrors = 0;
       for (let i = 0; i < target.length; i++) {
         if (val[i] !== target[i]) wordErrors++;
+      }
+
+      // 统计本词每个字符的要求输入次数（错误率分母，issue #4）。
+      // 放在结算处而非 showCurrentWord：Backspace 整词重置会重渲染但不结算，
+      // 结算处每词只计一次，重打不虚增分母。
+      for (const ch of target) {
+        charTotals[ch] = (charTotals[ch] || 0) + 1;
       }
 
       if (wordErrors === 0) {
