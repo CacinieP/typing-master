@@ -368,3 +368,14 @@ function getKeySequence(char) {
   if (ACCENT_SEQUENCES[char]) return ACCENT_SEQUENCES[char];
   return [char];
 }
+
+const DEAD_KEY_CHARS = ["'", '`', '"', '^', '~'];
+// 死键中间态判定（issue #3）：typed 是否为 expected 字符的死键前缀。
+// US International 布局下，死键（' ` " ^ ~）按下瞬间输入框会先出现死键字符本身，
+// 此时不应计错、不应推进高亮，更不应触发整词结算 —— 等待下一个组合键。
+// 例：café 打到 caf 后按 '，value="caf'"，expected='é' → 组合中，返回 true。
+// 目标本身就是撇号时（如 s'il），ACCENT_SEQUENCES["'"] 不存在 → 返回 false，走正常比对。
+function isDeadKeyCombo(typed, expected) {
+  const seq = ACCENT_SEQUENCES[expected];
+  return !!(seq && seq[0] === typed && DEAD_KEY_CHARS.indexOf(typed) !== -1);
+}

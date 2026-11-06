@@ -28,14 +28,21 @@ class StatsManager {
     if (data[lang].sessions.length > 100) {
       data[lang].sessions = data[lang].sessions.slice(-100);
     }
-    // Track character errors
+    // Track character stats：total=该字符被要求输入的总次数，errors=打错次数。
+    // 旧格式 charErrors 值是 {total,errors} 对象且 total≡errors（错误率恒 100%，issue #4）；
+    // 新格式 charErrors 是错误次数数字，分母来自 session.charTotals。
+    const totals = session.charTotals || {};
     if (session.charErrors) {
       for (const [ch, count] of Object.entries(session.charErrors)) {
+        const errors = typeof count === 'number' ? count : (count.errors || 0);
+        if (!errors && !totals[ch]) continue;
         if (!data[lang].chars[ch]) data[lang].chars[ch] = { total: 0, errors: 0 };
-        data[lang].chars[ch].total += count.total || 0;
-        data[lang].chars[ch].errors += count.errors || 0;
+        data[lang].chars[ch].total += totals[ch] || (typeof count === 'object' ? (count.total || 0) : 0);
+        data[lang].chars[ch].errors += errors;
       }
     }
+    // 无 total（新格式里没被打错但有 charTotals 的字符）也可计入分母，
+    // 让错误率更真实；此处只在已有错误记录的字符上累加，避免对象膨胀。
     this._save(data);
   }
 
@@ -52,9 +59,11 @@ class StatsManager {
     const totalWords = sessions.reduce((s, x) => s + (x.correct + x.wrong), 0);
     const totalCorrect = sessions.reduce((s, x) => s + x.correct, 0);
 
-    // Problem characters
+    // Problem characters：错误率现在有了真实分母（issue #4 修复后）。
+    // 过滤样本过少的字符（total<3 时 1 次打错就是 100%，排序噪声大）。
     const charStats = Object.entries(ld.chars || {})
       .map(([ch, s]) => ({ char: ch, errorRate: s.errors / Math.max(s.total, 1), ...s }))
+      .filter(cs => cs.total >= 3)
       .sort((a, b) => b.errorRate - a.errorRate)
       .slice(0, 10);
 
