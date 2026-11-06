@@ -6,11 +6,11 @@
 ## 1. 发布流程
 
 ```bash
-# 1. 确认 main 干净、CI 绿
+# 1. 确认 main 干净、CI 绿（validate job 先跑词库/模板/单元测试门禁）
 # 2. 升版本（package.json version）
 # 3. 打 tag 并推送 —— tag 是 release 的唯一触发器
 git tag v1.x.0 && git push origin main --tags
-# 4. CI 自动：双平台构建 → macOS 签名+公证 → GitHub Release 上传 exe/dmg
+# 4. CI 自动：validate → 双平台构建 → macOS 签名+公证+DMG staple → GitHub Release 上传 exe/dmg
 # 5. 按 §5 验证产物后，在 Release 页把 prerelease/draft 状态定稿
 ```
 
@@ -35,21 +35,13 @@ git tag v1.x.0 && git push origin main --tags
 ### 2.2 签名链路如何工作（重要，改 CI 前读）
 
 1. **证书**：CI 的 Configure 步骤把 base64 的 `CSC_LINK` 导入环境 → electron-builder 拿到后**自行解码 base64、创建临时 keychain、导入证书、签名**（app-builder-lib 的 `importCertificate()` 原生支持裸 base64）。不需要手工 `security import` 步骤。
-2. **公证**：electron-builder 25 内置公证（检测到 `APPLE_ID` 等环境变量即触发）会先公证一次；`afterSign: build/notarize.js` 随后**再公证一次** —— 双重公证（见 issue #8，v1.4.0 日志已证实）。二选一收敛：删除 afterSign 钩子，或 `mac.notarize: false` 关内置。
+2. **公证**：`mac.notarize: false` 已关闭 electron-builder 内置公证，`afterSign: build/notarize.js` 是**唯一公证入口**（v1.5.0 修复双重公证，issue #8；v1.4.0 曾每 arch 公证两次）。
 3. **凭证缺失的降级**：三个 APPLE_* 变量任一缺失 → notarize.js 跳过公证只签名；`CSC_LINK` 缺失 → 完全跳过签名（ad-hoc）。所以 fork/无 secrets 环境也能构建，只是产物未签名。
 4. **PR 构建**：PR 无 secrets，macOS job 已被显式跳过（`github.event_name != 'pull_request'`）。
 
-### 2.3 待办（issue #9）
+### 2.3 DMG staple（已在 CI，v1.5.0）
 
-CI 补 DMG staple（app 已 staple，DMG 容器没有）：
-
-```yaml
-- name: Staple DMGs
-  if: matrix.platform == 'mac'
-  run: |
-    xcrun stapler staple "dist/"*.dmg
-    xcrun stapler validate "dist/"*.dmg
-```
+CI 的 **Staple notarized DMGs** 步骤会对 `dist/*.dmg` 逐个 `stapler staple` + `validate`；未公证（凭证缺失）时容错跳过。app 内的 staple 由 @electron/notarize 自动完成。
 
 ## 3. Windows 签名（当前：未签名）
 
@@ -109,3 +101,4 @@ Get-AuthenticodeSignature ".\Typing.Master.Setup.1.x.0.exe"
 | 日期 | 版本 | 结论 |
 |---|---|---|
 | 2026-11-06 | v1.4.0 | macOS 双 arch：Developer ID（Yichun Deng, 5CFSU44B7Q）+ 公证 + app staple ✅；DMG 容器无 staple；exe 未签名；CI 双重公证证实（run 33694574749） |
+| 2026-11-06 | 本地构建（fix/ci-deps） | electron 43.8.7 + builder 26.18.0：双 arch dmg + win NSIS 交叉构建均成功；notarize:false 生效（单公证）；asar 资源完整 |
