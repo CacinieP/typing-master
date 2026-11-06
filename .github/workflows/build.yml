@@ -51,19 +51,6 @@ jobs:
         env:
           ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
 
-      - name: Prepare macOS signing certificate
-        if: matrix.platform == 'mac' && env.CSC_LINK != ''
-        env:
-          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
-        run: |
-          echo $CSC_LINK | base64 -d > certificate.p12
-          security create-keychain -p keychainpassword build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p keychainpassword build.keychain
-          security import certificate.p12 -k build.keychain -P "${{ secrets.MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k keychainpassword build.keychain
-          rm -f certificate.p12
-
       - name: Build Electron app (Windows)
         if: matrix.platform == 'win'
         run: npm run build:win
@@ -74,8 +61,10 @@ jobs:
           CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
           CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         # 仅当证书 secret 非空时才导出 CSC_* 变量。
-        # secret 缺失时变量保持未定义 → electron-builder 自动跳过签名(行为已验证)，
-        # 而非注入空字符串导致 "not a file" 错误。
+        # CSC_LINK 支持直接传 base64 证书内容：electron-builder 的 importCertificate()
+        # 会自行解码、创建临时 keychain 并导入签名（无需手工 security import 步骤）。
+        # （原 "Prepare macOS signing certificate" 步骤因 if 中引用同 step 的 env
+        #   条件恒为 false 从未执行过，已删除。）
         run: |
           if [ -n "$CSC_LINK" ]; then
             echo "CSC_LINK=$CSC_LINK" >> "$GITHUB_ENV"
@@ -89,10 +78,27 @@ jobs:
         if: matrix.platform == 'mac' && github.event_name != 'pull_request'
         run: npm run build:mac
         env:
-          # 公证（全部存在时才公证；任一缺失则只签名不公证 —— notarize.js 内部判断）
+          # 公证凭证注入 afterSign 钩子（build/notarize.js，唯一公证入口；
+          # electron-builder 内置公证已由 mac.notarize=false 关闭，避免双重公证）。
+          # 任一缺失则只签名不公证（notarize.js 内部判断）。
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Staple notarized DMGs
+        if: matrix.platform == 'mac' && github.event_name != 'pull_request'
+        # app 内的 staple 由 @electron/notarize 自动完成；DMG 容器需要单独 staple（issue #9）。
+        # 凭证缺失（未公证）时 stapler 会失败 —— 容错跳过，不阻塞构建。
+        run: |
+          shopt -s nullglob
+          for f in dist/*.dmg; do
+            if xcrun stapler staple "$f"; then
+              echo "::notice::stapled $f"
+              xcrun stapler validate "$f" || true
+            else
+              echo "::warning::staple 跳过（$f 未公证或凭证缺失）"
+            fi
+          done
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
