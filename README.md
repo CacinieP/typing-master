@@ -14,6 +14,11 @@ Download the latest version from [Releases](https://github.com/CacinieP/typing-m
 - macOS Intel: `.dmg`
 - macOS Apple Silicon: `arm64.dmg`
 
+**Signing status** (verified on v1.4.0):
+
+- macOS: signed with Developer ID, **notarized by Apple**, works with Gatekeeper out of the box
+- Windows: the installer is **not code-signed yet**; SmartScreen may warn — click "More info" → "Run anyway". Only download from the official Releases page.
+
 You can also run from source:
 
 ```bash
@@ -75,19 +80,27 @@ word,reading,romaji,meaning,level,category,difficulty
 │   ├── keyboard.js   # Virtual keyboard
 │   └── stats.js      # Practice statistics
 ├── words/            # Built-in vocabulary
-├── templates/        # CSV templates
-└── manuals/          # Language-specific typing manuals
+├── templates/        # CSV templates (repo only, not packaged)
+├── manuals/          # Language-specific typing manuals
+├── build/            # Packaging icons + notarize.js (afterSign hook)
+├── docs/             # Technical docs & release guide
+└── .github/workflows/build.yml
 ```
 
 ## Tech Stack
 
-- Electron 33
+- Electron 43
 - Native HTML/CSS/JavaScript
 - localStorage persistence
 - GitHub Actions release builds for Windows and macOS
 
-## License
+## Documentation
 
+- [Technical docs (architecture)](docs/ARCHITECTURE.md) — data flow, input model, packaging & signing pipeline
+- [Release & notarization guide](docs/RELEASE.md) — tag-based release process, secrets setup, artifact verification
+- [User guide (中文)](manuals/user-guide.md) and per-language typing manuals in `manuals/`
+
+## License
 AGPL-3.0-only
 
 ---
@@ -107,6 +120,11 @@ AGPL-3.0-only
 - Windows: `.exe` 安装包
 - macOS Intel: `.dmg`
 - macOS Apple Silicon: `arm64.dmg`
+
+**签名状态**（v1.4.0 实测）：
+
+- macOS：Developer ID 签名 + **已通过 Apple 公证**，Gatekeeper 直接放行
+- Windows：安装包**暂未做代码签名**，SmartScreen 可能拦截——点「更多信息」→「仍要运行」。请只从官方 Releases 页下载。
 
 也可以从源码运行：
 
@@ -169,16 +187,25 @@ word,reading,romaji,meaning,level,category,difficulty
 │   ├── keyboard.js   # Virtual keyboard
 │   └── stats.js      # Practice statistics
 ├── words/            # Built-in vocabulary
-├── templates/        # CSV templates
-└── manuals/          # Language-specific typing manuals
+├── templates/        # CSV templates (repo only, not packaged)
+├── manuals/          # Language-specific typing manuals
+├── build/            # Packaging icons + notarize.js (afterSign hook)
+├── docs/             # Technical docs & release guide
+└── .github/workflows/build.yml
 ```
 
 ## Tech Stack
 
-- Electron 33
+- Electron 43
 - Native HTML/CSS/JavaScript
 - localStorage persistence
 - GitHub Actions release builds for Windows and macOS
+
+## Documentation
+
+- [技术文档（架构）](docs/ARCHITECTURE.md) —— 数据流、输入判定模型、打包与签名公证链路
+- [发布与签名公证手册](docs/RELEASE.md) —— tag 发布流程、Secrets 配置、产物验证清单
+- [用户手册](manuals/user-guide.md) 与各语言打字手册（`manuals/`）
 
 ## License
 
