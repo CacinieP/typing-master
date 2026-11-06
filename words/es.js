@@ -182,7 +182,6 @@ WORD_DATA['es'] = {
     {word:'amarillo',meaning:'黄色',phonetic:'/a.ma.ˈɾi.ʎo/',category:'colores',difficulty:2},
     {word:'blanco',meaning:'白色',phonetic:'/ˈblaŋ.ko/',category:'colores',difficulty:1},
     {word:'negro',meaning:'黑色',phonetic:'/ˈne.ɣɾo/',category:'colores',difficulty:1},
-    
     {word:'rosado',meaning:'粉色',phonetic:'/ro.ˈsa.ðo/',category:'colores',difficulty:2},
     {word:'morado',meaning:'紫色',phonetic:'/mo.ˈɾa.ðo/',category:'colores',difficulty:2},
     {word:'marrón',meaning:'棕色',phonetic:'/ma.ˈrron/',category:'colores',difficulty:2},
@@ -197,7 +196,6 @@ WORD_DATA['es'] = {
     {word:'brillante',meaning:'闪亮的',phonetic:'/bri.ˈʎan.te/',category:'colores',difficulty:2},
     {word:'color',meaning:'颜色',phonetic:'/ko.ˈloɾ/',category:'colores',difficulty:1},
     {word:'colores',meaning:'颜色（复数）',phonetic:'/ko.ˈlo.ɾes/',category:'colores',difficulty:2},
-    
     {word:'transparente',meaning:'透明的',phonetic:'/tɾans.pa.ˈɾen.te/',category:'colores',difficulty:3},
     {word:'beige',meaning:'米色',phonetic:'/ˈbej.xe/',category:'colores',difficulty:2},
     {word:'colorido',meaning:'色彩鲜艳的',phonetic:'/ko.lo.ˈɾi.ðo/',category:'colores',difficulty:3},
@@ -355,7 +353,6 @@ WORD_DATA['es'] = {
     {word:'fenómeno',meaning:'现象',phonetic:'/fe.ˈno.me.no/',category:'emociones',difficulty:4},
     {word:'paradigma',meaning:'范式',phonetic:'/pa.ˈɾa.ðiɣ.ma/',category:'emociones',difficulty:4},
     {word:'enfoque',meaning:'方法/焦点',phonetic:'/em.ˈfo.ke/',category:'emociones',difficulty:4},
-    
     {word:'controversia',meaning:'争议',phonetic:'/kon.tɾo.ˈbeɾ.sja/',category:'emociones',difficulty:4},
     {word:'ambigüedad',meaning:'歧义',phonetic:'/am.bi.ɣwe.ˈðað/',category:'emociones',difficulty:4},
     {word:'coherencia',meaning:'连贯性',phonetic:'/ko.e.ˈɾen.θja/',category:'emociones',difficulty:4},
@@ -391,7 +388,6 @@ WORD_DATA['es'] = {
     {word:'supervisor',meaning:'主管',phonetic:'/su.peɾ.ˈbi.soɾ/',category:'diario',difficulty:4},
 
     // --- B2: 新闻与媒体 (news & media) ---
-    
     {word:'editorial',meaning:'社论',phonetic:'/e.ði.to.ˈɾjal/',category:'diario',difficulty:4},
     {word:'artículo',meaning:'文章',phonetic:'/aɾ.ˈti.ku.lo/',category:'diario',difficulty:4},
     {word:'crónica',meaning:'新闻报导',phonetic:'/ˈkɾo.ni.ka/',category:'diario',difficulty:4},
@@ -444,10 +440,8 @@ WORD_DATA['es'] = {
     {word:'metodología',meaning:'方法论',phonetic:'/me.to.ðo.lo.ˈxi.a/',category:'numeros',difficulty:4},
     {word:'asignatura',meaning:'科目',phonetic:'/a.sig.na.ˈtu.ɾa/',category:'numeros',difficulty:4},
     {word:'calificación',meaning:'成绩',phonetic:'/ka.li.fi.ka.ˈθjon/',category:'numeros',difficulty:4},
-    
     {word:'conocimiento',meaning:'知识',phonetic:'/ko.no.θi.ˈmjen.to/',category:'numeros',difficulty:4},
     {word:'habilidad',meaning:'技能',phonetic:'/a.bi.li.ˈðað/',category:'numeros',difficulty:4},
-    
     {word:'aprendizaje',meaning:'学习',phonetic:'/a.pɾen.di.ˈsa.xe/',category:'numeros',difficulty:4},
     {word:'enseñanza',meaning:'教学',phonetic:'/en.se.ˈɲan.θa/',category:'numeros',difficulty:4},
     {word:'formación',meaning:'培训',phonetic:'/foɾ.ma.ˈθjon/',category:'numeros',difficulty:4},
@@ -466,7 +460,6 @@ WORD_DATA['es'] = {
     {word:'inteligencia artificial',meaning:'人工智能',phonetic:'/in.te.li.ˈxen.θja aɾ.ti.fi.ˈθjal/',category:'clima',difficulty:4},
     {word:'medio ambiente',meaning:'环境',phonetic:'/ˈme.ðjo am.bjen.te/',category:'clima',difficulty:4},
     {word:'contaminación',meaning:'污染',phonetic:'/kon.ta.mi.na.ˈθjon/',category:'clima',difficulty:4},
-    
     {word:'sostenibilidad',meaning:'可持续性',phonetic:'/sos.te.ni.bi.li.ˈðað/',category:'clima',difficulty:4},
     {word:'reciclaje',meaning:'回收',phonetic:'/re.θi.ˈkla.xe/',category:'clima',difficulty:4},
     {word:'ecosistema',meaning:'生态系统',phonetic:'/e.ko.sis.ˈte.ma/',category:'clima',difficulty:4},
@@ -561,7 +554,6 @@ WORD_DATA['es'] = {
     // --- C1: 高级情感与心理 (advanced emotions & psychology) ---
     {word:'desdén',meaning:'蔑视',phonetic:'/dez.ˈðen/',category:'emociones',difficulty:5},
     {word:'angustia',meaning:'极度痛苦',phonetic:'/aŋ.ˈɡwis.tja/',category:'emociones',difficulty:5},
-    
     {word:'desvelo',meaning:'焦虑/失眠',phonetic:'/dez.ˈbe.lo/',category:'emociones',difficulty:5},
     {word:'ensimismamiento',meaning:'自我沉醉',phonetic:'/en.si.miz.ma.ˈmjen.to/',category:'emociones',difficulty:5},
     {word:'anhelo',meaning:'渴望',phonetic:'/a.ˈne.lo/',category:'emociones',difficulty:5},
@@ -590,11 +582,9 @@ WORD_DATA['es'] = {
     {word:'inmanencia',meaning:'内在性',phonetic:'/in.ma.ˈnen.θja/',category:'emociones',difficulty:5},
     {word:'ética',meaning:'伦理学',phonetic:'/ˈe.ti.ka/',category:'emociones',difficulty:5},
     {word:'moralidad',meaning:'道德',phonetic:'/mo.ra.li.ˈðað/',category:'emociones',difficulty:5},
-    
     {word:'sabiduría',meaning:'智慧',phonetic:'/sa.bi.ðu.ˈɾi.a/',category:'emociones',difficulty:5},
     {word:'verdad',meaning:'真理',phonetic:'/beɾ.ˈðað/',category:'emociones',difficulty:5},
     {word:'razón',meaning:'理性',phonetic:'/rra.ˈθon/',category:'emociones',difficulty:5},
-    
     {word:'contingencia',meaning:'偶然性',phonetic:'/kon.tin.xen.ˈθja/',category:'emociones',difficulty:5},
     {word:'necesidad',meaning:'必然性',phonetic:'/ne.θe.si.ˈðað/',category:'emociones',difficulty:5},
     {word:'absoluto',meaning:'绝对的',phonetic:'/ab.so.ˈlu.to/',category:'emociones',difficulty:5},

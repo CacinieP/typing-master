@@ -222,12 +222,10 @@ WORD_DATA['pt'] = {
     {word:'branco',meaning:'白色',phonetic:'/ˈbɾɐ̃.ku/',category:'cores',difficulty:2},
     {word:'cinzento',meaning:'灰色',phonetic:'/sĩˈzẽ.tu/',category:'cores',difficulty:3},
     {word:'cor-de-rosa',meaning:'粉色',phonetic:'/kɔʁ dɨ ˈʁɔ.zɐ/',category:'cores',difficulty:3},
-    
     {word:'roxo',meaning:'紫色',phonetic:'/ˈʁo.ʃu/',category:'cores',difficulty:2},
     {word:'castanho',meaning:'棕色',phonetic:'/kɐʃˈta.ɲu/',category:'cores',difficulty:3},
     {word:'dourado',meaning:'金色',phonetic:'/dowˈɾa.du/',category:'cores',difficulty:2},
     {word:'prateado',meaning:'银色',phonetic:'/pɾɐ.tiˈa.du/',category:'cores',difficulty:3},
-    
     {word:'escuro',meaning:'深的',phonetic:'/iʃˈku.ʁu/',category:'cores',difficulty:2},
     {word:'arco-íris',meaning:'彩虹',phonetic:'/ˈaʁ.ku iˈriʃ/',category:'cores',difficulty:3},
     {word:'cor',meaning:'颜色',phonetic:'/kɔʁ/',category:'cores',difficulty:1},
@@ -325,7 +323,6 @@ WORD_DATA['pt'] = {
     {word:'liberdade',meaning:'自由',phonetic:'/li.bɨʁˈda.dɨ/',category:'emocoes',difficulty:3},
     {word:'verdade',meaning:'真理',phonetic:'/vɨʁˈda.dɨ/',category:'emocoes',difficulty:2},
     {word:'paixão',meaning:'热情',phonetic:'/pɐjˈʃɐ̃w̃/',category:'emocoes',difficulty:2},
-    
     {word:'paz',meaning:'和平',phonetic:'/pajʃ/',category:'emocoes',difficulty:1},
     {word:'gentileza',meaning:'善良',phonetic:'/ʒẽ.tiˈle.zɐ/',category:'emocoes',difficulty:3},
     {word:'orgulho',meaning:'骄傲',phonetic:'/uʁˈɡu.ʎu/',category:'emocoes',difficulty:3},
@@ -341,7 +338,6 @@ WORD_DATA['pt'] = {
     {word:'beleza',meaning:'美丽',phonetic:'/bɨˈle.zɐ/',category:'emocoes',difficulty:2},
     {word:'força',meaning:'力量',phonetic:'/ˈfɔʁ.sɐ/',category:'emocoes',difficulty:1},
     {word:'dor',meaning:'痛苦',phonetic:'/doʁ/',category:'emocoes',difficulty:1},
-    
     {word:'curiosidade',meaning:'好奇',phonetic:'/ku.ɾju.ziˈda.dɨ/',category:'emocoes',difficulty:3},
     {word:'ciúme',meaning:'嫉妒',phonetic:'/siˈu.mɨ/',category:'emocoes',difficulty:2},
     {word:'compaixão',meaning:'同情',phonetic:'/kõ.pɐjˈʃɐ̃w̃/',category:'emocoes',difficulty:3},
@@ -442,7 +438,6 @@ WORD_DATA['pt'] = {
     {word:'função',meaning:'功能',phonetic:'/fũˈsɐ̃w̃/',category:'academico',difficulty:4},
     {word:'evidência',meaning:'证据',phonetic:'/e.vi.dẽˈsjɐ/',category:'academico',difficulty:4},
     {word:'origem',meaning:'起源',phonetic:'/uˈɾi.ʒẽĩ/',category:'academico',difficulty:4},
-    
     {word:'medida',meaning:'措施',phonetic:'/mɨˈdi.dɐ/',category:'academico',difficulty:4},
     {word:'suposto',meaning:'假设的',phonetic:'/suˈpoʃ.tu/',category:'academico',difficulty:4},
     {word:'provável',meaning:'可能的',phonetic:'/pɾuˈva.vɛɫ/',category:'academico',difficulty:4},
@@ -476,7 +471,6 @@ WORD_DATA['pt'] = {
     {word:'eficaz',meaning:'有效的',phonetic:'/e.fiˈkaʃ/',category:'academico',difficulty:4},
     {word:'inicial',meaning:'最初的',phonetic:'/ĩ.siˈaɫ/',category:'academico',difficulty:4},
     {word:'final',meaning:'最终的',phonetic:'/fiˈnaɫ/',category:'academico',difficulty:4},
-    
     {word:'subjetivo',meaning:'主观的',phonetic:'/su.ʒɨˈti.vu/',category:'academico',difficulty:4},
     {word:'notícia',meaning:'新闻',phonetic:'/nuˈti.si.ɐ/',category:'sociedade',difficulty:4},
     {word:'jornal',meaning:'报纸',phonetic:'/ʒuʁˈnaɫ/',category:'sociedade',difficulty:4},
@@ -596,12 +590,10 @@ WORD_DATA['pt'] = {
     // === C1 - LITERARY & ADVANCED (difficulty: 5) ===
     {word:'efemeridade',meaning:'短暂',phonetic:'/e.fẽ.mɨ.ɾiˈda.dɨ/',category:'academico',difficulty:5},
     {word:'melancolia',meaning:'忧郁',phonetic:'/mɨ.lɐ̃.kuˈli.ɐ/',category:'academico',difficulty:5},
-    
     {word:'saudosismo',meaning:'怀旧情结',phonetic:'/sɐw.duˈziʒ.mu/',category:'academico',difficulty:5},
     {word:'desenlace',meaning:'结局',phonetic:'/dɨ.zẽˈla.sɨ/',category:'academico',difficulty:5},
     {word:'alvorecer',meaning:'黎明',phonetic:'/aw.vu.ɾɨˈseʁ/',category:'academico',difficulty:5},
     {word:'crepúsculo',meaning:'黄昏',phonetic:'/kɾɨˈpuʃ.ku.lu/',category:'academico',difficulty:5},
-    
     {word:'desolação',meaning:'荒凉',phonetic:'/dɨ.zu.lɐˈsɐ̃w̃/',category:'academico',difficulty:5},
     {word:'epifania',meaning:'顿悟',phonetic:'/e.pi.fɐˈni.ɐ/',category:'academico',difficulty:5},
     {word:'reminiscência',meaning:'回忆',phonetic:'/ʁɨ.mĩ.niˈsẽ.sjɐ/',category:'academico',difficulty:5},
@@ -677,7 +669,6 @@ WORD_DATA['pt'] = {
     {word:'prerrogativa',meaning:'特权',phonetic:'/pɾe.Ru.ɡɐˈti.vɐ/',category:'academico',difficulty:5},
     {word:'idiossincrasia',meaning:'特质',phonetic:'/i.dju.sĩ.kɾɐˈzi.ɐ/',category:'academico',difficulty:5},
     {word:'peculiaridade',meaning:'独特性',phonetic:'/pɨ.ku.li.ɐ.ɾiˈda.dɨ/',category:'academico',difficulty:5},
-    
     {word:'conjectura',meaning:'推测',phonetic:'/kõ.ʒɛkˈtu.ʁɐ/',category:'academico',difficulty:5},
     {word:'presunção',meaning:'假定',phonetic:'/pɾɨ.zũˈsɐ̃w̃/',category:'academico',difficulty:5},
     {word:'inferência',meaning:'推理',phonetic:'/ĩ.feˈɾẽ.sjɐ/',category:'academico',difficulty:5},
@@ -814,8 +805,6 @@ WORD_DATA['pt'] = {
     {word:'noturno',meaning:'夜晚的',phonetic:'/nuˈtuʁ.nu/',category:'academico',difficulty:5},
     {word:'sestinal',meaning:'午后的',phonetic:'/sɨʃ.tiˈnaɫ/',category:'academico',difficulty:5},
     {word:'azulado',meaning:'蔚蓝的',phonetic:'/ɐ.zuˈla.du/',category:'academico',difficulty:5},
-    
-    
     {word:'nubiloso',meaning:'多云的',phonetic:'/nu.biˈlu.zu/',category:'academico',difficulty:5},
     {word:'plúmbeo',meaning:'铅灰色的',phonetic:'/pɫũ.be.u/',category:'academico',difficulty:5},
     {word:'diáfano',meaning:'透明的',phonetic:'/diˈa.fɐ.nu/',category:'academico',difficulty:5},

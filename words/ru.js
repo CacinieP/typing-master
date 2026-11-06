@@ -291,8 +291,6 @@ WORD_DATA['ru'] = {
     {word:'мужество',meaning:'勇气',phonetic:'/muʐɪstvə/',category:'emotsii',difficulty:2},
     {word:'терпение',meaning:'耐心',phonetic:'/tʲɪrpʲenʲɪjə/',category:'emotsii',difficulty:3},
     {word:'свобода',meaning:'自由',phonetic:'/svɐbodə/',category:'emotsii',difficulty:2},
-    
-    
     {word:'мир',meaning:'和平',phonetic:'/mʲir/',category:'emotsii',difficulty:1},
     {word:'доброта',meaning:'善良',phonetic:'/dəbrɐta/',category:'emotsii',difficulty:2},
     {word:'гордость',meaning:'骄傲',phonetic:'/gordəstʲ/',category:'emotsii',difficulty:2},
@@ -313,7 +311,6 @@ WORD_DATA['ru'] = {
     // === 补充词汇 - Еда ===
     {word:'икра',meaning:'鱼子酱',phonetic:'/ɪˈkra/',category:'eda',difficulty:2},
     {word:'блин',meaning:'薄饼',phonetic:'/blʲin/',category:'eda',difficulty:2},
-    
     {word:'пирожок',meaning:'小馅饼',phonetic:'/pʲɪrɐˈʂok/',category:'eda',difficulty:2},
     {word:'сметана',meaning:'酸奶油',phonetic:'/smʲɪˈtanə/',category:'eda',difficulty:2},
     {word:'холодец',meaning:'肉冻',phonetic:'/xɐˈlodʲɪt͡s/',category:'eda',difficulty:3},
@@ -338,23 +335,8 @@ WORD_DATA['ru'] = {
     {word:'тринадцать',meaning:'十三',phonetic:'/trʲɪˈnadt͡sətʲ/',category:'chisla',difficulty:2},
     {word:'четырнадцать',meaning:'十四',phonetic:'/t͡sɨtɨrˈnadt͡sətʲ/',category:'chisla',difficulty:2},
     {word:'пятнадцать',meaning:'十五',phonetic:'/pʲɪtˈnadt͡sətʲ/',category:'chisla',difficulty:2},
-    
-    
-    
-    
-    
-    
-    
     {word:'миллиард',meaning:'十亿',phonetic:'/mʲɪˈlʲɪərt/',category:'chisla',difficulty:3},
-    
-    
-    
-    
     // === 补充词汇 - Семья ===
-    
-    
-    
-    
     {word:'племянник',meaning:'侄子',phonetic:'/plʲɪˈmʲænʲɪk/',category:'semia',difficulty:3},
     {word:'племянница',meaning:'侄女',phonetic:'/plʲɪˈmʲænʲɪt͡sə/',category:'semia',difficulty:3},
     {word:'внук',meaning:'孙子',phonetic:'/vnut/',category:'semia',difficulty:2},
@@ -369,12 +351,6 @@ WORD_DATA['ru'] = {
     {word:'сирота',meaning:'孤儿',phonetic:'/sʲɪrɐta/',category:'semia',difficulty:4},
     {word:'опекун',meaning:'监护人',phonetic:'/ɐˈpʲekun/',category:'semia',difficulty:5},
     // === 补充词汇 - Цвета ===
-    
-    
-    
-    
-    
-    
     {word:'бордовый',meaning:'酒红色',phonetic:'/bərdɐˈvɨj/',category:'tsveta',difficulty:4},
     {word:'бирюзовый',meaning:'青色',phonetic:'/bʲɪrʲʉˈzovɨj/',category:'tsveta',difficulty:4},
     {word:'малиновый',meaning:'覆盆子红',phonetic:'/məˈlʲinəvɨj/',category:'tsveta',difficulty:4},
@@ -385,18 +361,13 @@ WORD_DATA['ru'] = {
     {word:'рубиновый',meaning:'宝石红',phonetic:'/rʉˈbʲinəvɨj/',category:'tsveta',difficulty:5},
     {word:'сапфировый',meaning:'蓝宝石色',phonetic:'/sɐˈfʲirəvɨj/',category:'tsveta',difficulty:5},
     {word:'яркий',meaning:'鲜艳的',phonetic:'/ˈjarkʲɪj/',category:'tsveta',difficulty:2},
-    
-    
     {word:'бледный',meaning:'苍白的',phonetic:'/ˈblʲednɨj/',category:'tsveta',difficulty:3},
     {word:'насыщенный',meaning:'浓郁的',phonetic:'/nəsɨˈɕːenɨj/',category:'tsveta',difficulty:4},
     {word:'пастельный',meaning:'柔和的',phonetic:'/pəsˈtʲelʲnɨj/',category:'tsveta',difficulty:4},
     {word:'перламутровый',meaning:'珍珠色',phonetic:'/pʲɪrləmʉtrovɨj/',category:'tsveta',difficulty:5},
     {word:'графитовый',meaning:'石墨色',phonetic:'/ɡrɐˈfʲitəvɨj/',category:'tsveta',difficulty:5},
     // === 补充词汇 - Тело ===
-    
-    
     {word:'локоть',meaning:'肘',phonetic:'/ˈlokətʲ/',category:'telo',difficulty:2},
-    
     {word:'ноготь',meaning:'指甲',phonetic:'/ˈnoɡətʲ/',category:'telo',difficulty:2},
     {word:'щиколотка',meaning:'脚踝',phonetic:'/ɕːɪkɐˈlotkə/',category:'telo',difficulty:4},
     {word:'запястье',meaning:'手腕',phonetic:'/zɐˈpʲæstʲje/',category:'telo',difficulty:4},
@@ -430,7 +401,6 @@ WORD_DATA['ru'] = {
     {word:'пробка',meaning:'堵车',phonetic:'/ˈprobkə/',category:'povsednevnoe',difficulty:2},
     {word:'очередь',meaning:'排队',phonetic:'/ɐˈt͡ɕerʲɪtʲ/',category:'povsednevnoe',difficulty:3},
     {word:'ремонт',meaning:'维修',phonetic:'/rʲɪˈmont/',category:'povsednevnoe',difficulty:2},
-    
     {word:'приём',meaning:'接待',phonetic:'/prʲɪˈjom/',category:'povsednevnoe',difficulty:3},
     {word:'документ',meaning:'文件',phonetic:'/dəkʉˈmʲent/',category:'povsednevnoe',difficulty:2},
     {word:'собеседование',meaning:'面试',phonetic:'/səbəsʲɪˈdovənʲɪjə/',category:'povsednevnoe',difficulty:4},

@@ -2715,7 +2715,6 @@ WORD_DATA["ja"] = {
       "category": "noun_abstract",
       "difficulty": 2
     },
-    
     {
       "word": "集める",
       "reading": "あつめる",
@@ -3391,7 +3390,6 @@ WORD_DATA["ja"] = {
       "category": "adjective_na",
       "difficulty": 2
     },
-    
     {
       "word": "当然",
       "reading": "とうぜん",
@@ -4679,7 +4677,6 @@ WORD_DATA["ja"] = {
       "category": "adjective_na",
       "difficulty": 4
     },
-    
     {
       "word": "理念",
       "reading": "りねん",
@@ -5211,6 +5208,5 @@ WORD_DATA["ja"] = {
       "category": "adjective_i",
       "difficulty": 5
     },
-    
   ]
 };

@@ -40,13 +40,16 @@ function findEntrySpans(text, from) {
       depth--;
       if (depth === 0 && start >= 0) {
         let end = i + 1;
+        let begin = start;
+        // 吞掉条目前的缩进（回退到行首），保证删除后不残留空白行
+        while (begin > 0 && /[ \t]/.test(text[begin - 1])) begin--;
         // 吞掉紧跟的逗号与空白（作为条目分隔的一部分）
         let j = end;
         while (j < text.length && (text[j] === ',' || /\s/.test(text[j]))) {
           end = text[j] === ',' ? j + 1 : end;
           j++;
         }
-        spans.push({ start, end });
+        spans.push({ start: begin, end });
         start = -1;
       }
       if (depth < 0) break; // words 数组结束（遇到 ] 不会到这，防御）
