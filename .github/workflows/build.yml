@@ -8,7 +8,26 @@ on:
     branches: [main]
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate word data, templates & unit tests
+        run: |
+          node scripts/validate_words.js
+          node scripts/test_units.js
+          # 模板单源校验：重新生成 templates/*.csv，有任何漂移即失败（issue #6）
+          node scripts/gen_templates.js
+          git diff --exit-code -- templates/
+
   build:
+    needs: validate
     strategy:
       matrix:
         include:

@@ -2715,15 +2715,7 @@ WORD_DATA["ja"] = {
       "category": "noun_abstract",
       "difficulty": 2
     },
-    {
-      "word": "届く",
-      "reading": "とどく",
-      "romaji": "todoku",
-      "meaning": "够到·送达",
-      "level": "N4",
-      "category": "verb_1",
-      "difficulty": 2
-    },
+    
     {
       "word": "集める",
       "reading": "あつめる",
@@ -3399,15 +3391,7 @@ WORD_DATA["ja"] = {
       "category": "adjective_na",
       "difficulty": 2
     },
-    {
-      "word": "心配",
-      "reading": "しんぱい",
-      "romaji": "shinpai",
-      "meaning": "担心的",
-      "level": "N4",
-      "category": "adjective_na",
-      "difficulty": 2
-    },
+    
     {
       "word": "当然",
       "reading": "とうぜん",
@@ -4695,15 +4679,7 @@ WORD_DATA["ja"] = {
       "category": "adjective_na",
       "difficulty": 4
     },
-    {
-      "word": "深刻な",
-      "reading": "しんこくな",
-      "romaji": "shinkokuna",
-      "meaning": "深刻的",
-      "level": "N2",
-      "category": "adjective_na",
-      "difficulty": 4
-    },
+    
     {
       "word": "理念",
       "reading": "りねん",
@@ -5235,14 +5211,6 @@ WORD_DATA["ja"] = {
       "category": "adjective_i",
       "difficulty": 5
     },
-    {
-      "word": "悔しい",
-      "reading": "くやしい",
-      "romaji": "kuyashii",
-      "meaning": "不甘的",
-      "level": "N1",
-      "category": "adjective_i",
-      "difficulty": 5
-    }
+    
   ]
 };

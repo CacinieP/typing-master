@@ -1022,52 +1022,9 @@
   }
 
   function generateTemplate(lang) {
-    const type = LANG_TYPE[lang];
-    const templates = {
-      fr: 'bonjour,你好,/bɔ̃ʒuʁ/,salutations,1\n' +
-          'merci,谢谢,/mɛʁsi/,salutations,1\n' +
-          'croissant,羊角面包,/kʁwasɑ̃/,nourriture,1\n' +
-          'bibliothèque,图书馆,/biblijɔtɛk/,quotidien,2\n' +
-          'développement,发展,/devlɔpmɑ̃/,emotions,3\n',
-      es: 'hola,你好,/ola/,saludos,1\n' +
-          'gracias,谢谢,/ɡɾaθjas/,saludos,1\n' +
-          'tapas,小吃,/tapas/,nourriture,1\n' +
-          'biblioteca,图书馆,/iblioteka/,quotidien,2\n' +
-          'desarrollo,发展,/desaroʎo/,emotions,3\n',
-      it: 'ciao,你好,/tʃao/,saluti,1\n' +
-          'grazie,谢谢,/ˈɡrattsje/,saluti,1\n' +
-          'pizza,披萨,/ˈpittsa/,nourriture,1\n' +
-          'biblioteca,图书馆,/biblioˈteka/,quotidien,2\n' +
-          'sviluppo,发展,/zviˈluppo/,emotions,3\n',
-      pt: 'olá,你好,/ɔˈla/,saudacoes,1\n' +
-          'obrigado,谢谢,/obɾiˈɡadu/,saudacoes,1\n' +
-          'feijoada,黑豆炖肉,/fejˈʒwada/,nourriture,2\n' +
-          'biblioteca,图书馆,/biliuˈtɛka/,quotidien,2\n' +
-          'desenvolvimento,发展,/dezevolveˈmẽtu/,emotions,4\n',
-      ru: 'привет,你好,/prʲɪˈvʲet/,salutations,1\n' +
-          'спасибо,谢谢,/spɐˈsʲibə/,salutations,1\n' +
-          'водка,伏特加,/ˈvotkə/,nourriture,1\n' +
-          'библиотека,图书馆,/bʲɪblʲɪɐˈtʲekə/,quotidien,2\n' +
-          'развитие,发展,/rɐzˈvʲitʲɪje/,emotions,3\n',
-      de: 'hallo,你好,/ˈhalo/,begruessung,1\n' +
-          'danke,谢谢,/ˈdaŋkə/,begruessung,1\n' +
-          'Grüße,问候,/ˈɡʁyːsə/,begruessung,3\n' +
-          'Mädchen,女孩,/ˈmɛːtçn̩/,familie,2\n' +
-          'Straße,街道,/ˈʃtʁaːsə/,reisen,2\n' +
-          'Bücher,书籍,/ˈbyːçɐ/,alltag,3\n' +
-          'schön,美丽的,/ʃøːn/,emotions,2\n'
-    };
-
-    if (type === 'japanese') {
-      return CSV_HEADERS.japanese + '\n' +
-        '私,わたし,watashi,我,N5,noun_basic,1\n' +
-        '食べる,たべる,taberu,吃,N5,verb_2,1\n' +
-        '飲む,のむ,nomu,喝,N5,verb_1,1\n' +
-        '美しい,うつくしい,utsukushii,美丽的,N3,adjective_i,3\n' +
-        '図書館,としょかん,toshokan,图书馆,N3,noun_nature,3\n';
-    }
-
-    return CSV_HEADERS.european + '\n' + (templates[lang] || templates.fr);
+    // 模板唯一来源：js/vocab-templates.js（仓库 templates/*.csv 由 scripts/gen_templates.js 生成，issue #6）
+    const tpl = window.VOCAB_TEMPLATES && window.VOCAB_TEMPLATES.TEMPLATES[lang];
+    return tpl || window.VOCAB_TEMPLATES.TEMPLATES.fr;
   }
 
   function exportVocab(lang) {
