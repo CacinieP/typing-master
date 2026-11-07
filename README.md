@@ -210,3 +210,13 @@ word,reading,romaji,meaning,level,category,difficulty
 ## License
 
 AGPL-3.0-only
+
+---
+
+## Lang Master · 相关项目 / Related Project
+
+[Lang Master](https://github.com/CacinieP/lang-master) 延续了 Typing Master 通过对照培养语言直觉的思路。Typing Master 练习外语键盘输入，Lang Master 则借用自然语言学的五层框架（词法、构造、句法、语义、语用），比较同一个编程概念在不同语言里如何表达、如何运作，以及各自适合什么场景。当前 Alpha 可探索 Python、C、Java 和 Rust，帮助你把已有的概念理解迁移到下一门语言。
+
+[Lang Master](https://github.com/CacinieP/lang-master) carries Typing Master’s focus on building language intuition into programming. While Typing Master helps you practice typing in different languages, Lang Master uses a five-layer framework inspired by linguistics to compare how programming languages express the same concept, what the code does, and when each approach fits. The current alpha lets you explore Python, C, Java, and Rust and build an understanding you can carry into your next language.
+
+[在线体验 / Live demo](https://caciniep.github.io/lang-master/)
